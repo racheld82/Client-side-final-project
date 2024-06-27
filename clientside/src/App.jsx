@@ -1,15 +1,20 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
 import FamilyInList from './components/FamilyInLIst'
+import FamilyMain from './components/FamilyMain'
 
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <>
-      <FamilyInList />
+      <Router>
+            <Routes>
+                <Route path="/" element={<FamilyInList />} />
+                <Route path="/family/:familyIndex" element={<FamilyMain />} />
+            </Routes>
+        </Router>
     </>
   )
 }

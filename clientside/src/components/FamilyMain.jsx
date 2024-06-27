@@ -20,12 +20,12 @@ export default function FamilyMain() {
 
     const handleSort = () => {
         switch (sortCriteria) {
-          case 'numOfChildren':
+            case 'numOfChildren':
             //GPT YOUR JOB!!!!!setFamilies(todosArr.slice().sort((a, b) => a.title.localeCompare(b.title))); // מיון לפי אלפבית
-          case 'none':
-            return families;
+            case 'none':
+                return families;
         }
-      };
+    };
 
     return (
         <>
@@ -55,9 +55,9 @@ export default function FamilyMain() {
 
 
                 </div>
-
+                <h2>this supposes to display the details of a sepecific family using familyIndex, a new fetch request, how to display and is there anything else to do in this page? maybe editing what can be editedF</h2>
             </div>
-            {families.map((family, index) => ) }
+            {/* {families.map((family, index) => ) } */}
         </>
     )
 }
