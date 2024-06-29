@@ -1,46 +1,132 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-// import { useRef } from 'react'
-// import {
-//     Link,
-//   useNavigate
-// } from "react-router-dom";
 
 export default function FamilyInList() {
-   
     const navigate = useNavigate();
+    const [families, setFamilies] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [limit] = useState(20);
+    const [offset, setOffset] = useState(0);
+    const [hasMoreData, setHasMoreData] = useState(true);
+    const [sortCriteria, setSortCriteria] = useState('none');
+    const [filterCriteria, setFilterCriteria] = useState('none'); 
+    const [filterValue, setFilterValue] = useState(''); 
     const theadStyle = {
-        "border": "1px solid black",
-        "padding": "8px"
-    }
+        border: "1px solid black",
+        padding: "8px"
+    };
 
-    const handleLodingMoreFamilies = () => {
-        //בפונקציה זו בעצם מבצעים בקשת fetch
-        //חדשה, כשהפעם במקום להכניס מידע על חשבון המערך הקיים מוסיפים מידע למערך הקיים, משהו כמו 
-        //setFamilies(prevData => [...prevData, newData])
-    }
+    const fetchFamilies = (newOffset, append = false) => {
+        setErrorMessage("");
+        let url = `http://localhost:8080/member?_limit=${limit}&_offset=${newOffset}`;
+        if (filterCriteria !== 'none' && filterValue) {
+            url += `&${filterCriteria}=${filterValue}`;
+        }
+        fetch(url)
+            .then((response) => {
+                if (response.ok) return response.json();
+                else throw new Error("Failed to fetch data");
+            })
+            .then((result) => {
+                console.log("Fetched data:", result);  // Debugging statement
+                if (result.data) {
+                    if (append) {
+                        setFamilies(prevFamilies => [...prevFamilies, ...result.data]);
+                    } else {
+                        setFamilies(result.data);
+                    }
+                    setOffset(newOffset + limit);
+                    if (result.data.length < limit) {
+                        setHasMoreData(false); 
+                    }
+                } else {
+                    throw new Error("No data field in response");
+                }
+            }).catch(error => {
+                console.error("Error fetching data:", error);  
+                setErrorMessage("No families found");
+            });
+    };
 
-    const handleAddingFilter = () => {
-        //כאן מבצעים בקשת fetch
-        //בהתאם לכפתור שנלחץ (כרגע אנחנו נותנות את האופציות לסינון, טיפול בערך כמו בלינקדאין,
-        // כל פעם שלוחצים על תווית מוסיפים סינון וכל פעם שלוחצים עליה שוב הוא יורד)
-        //למה בעצם נתנו את כל האופציות של הסינון בעמוד familyMain?
-        //לכאורה זה צריך להיות כאן, איפה שאפשר לסנן מתוך הרבה משפחות רק משפחות שעונות על תנאים מסויימים
-        //יכול להיות שצריך גם כפתור שמציע להוריד את כל הסינונים בבת אחת, חוזרים למסך ריק
-    }
+    useEffect(() => {
+        fetchFamilies(0); 
+    }, []);
+
+    const handleLoadingMoreFamilies = () => {
+        fetchFamilies(offset, true); 
+    };
 
     const handleDisplayingFullDetails = (familyIndex) => {
         navigate(`/family/${familyIndex}`);
+    };
+
+    const handleSortChange = (event) => {
+        setSortCriteria(event.target.value);
+    };
+
+    const handleSort = () => {
+        switch (sortCriteria) {
+            case 'numOfChildren':            
+            case 'none':
+                return families;
+        }
+    };
+
+    const handleFilterChange = (event) => {
+        setFilterCriteria(event.target.value);
+        setFilterValue('');
+    };
+
+    const handleFilterValueChange = (event) => {
+        setFilterValue(event.target.value);
+    };
+
+    const handleFilter = () => {
+        fetchFamilies(0); 
     }
-    const families = [
-        { familyIndex: 1, familyName: "כהן", husbandId: 789, wifeId: 963, husbandsOccupation: "לומד", numberOfChildren: 7, street: "דרוק" },
-        { familyIndex: 2, familyName: "לוי", husbandId: 123, wifeId: 852, husbandsOccupation: "עובד חצי יום", numberOfChildren: 6, street: "אגרות משה" },
-        // Add more family objects here
-    ];
+
+    const renderFilterInput = () => {
+        switch (filterCriteria) {
+            case 'numOfChildren':
+                return <input type="number" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס מספר ילדים" />;
+            case 'agesRangeOfChildren':
+                return (
+                    <select value={filterValue} onChange={handleFilterValueChange}>
+                        <option value="">בחר טווח גילאים</option>
+                        <option value="0-5">ילדים מגיל 0-5</option>
+                        <option value="5-10">ילדים מגיל 5-10</option>
+                        <option value="10-15">ילדים מגיל 10-15</option>
+                        <option value="15-20">ילדים מגיל 15-20</option>
+                    </select>
+                );
+            default:
+                return <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס ערך חיפוש" />;
+        }
+    };
 
     return (
-        <>
+        <>            
+            <select value={sortCriteria} onChange={handleSortChange}>
+                <option value="numOfChildren">מספר ילדים</option>
+                <option value="none">none</option>
+            </select>
+            <button onClick={handleSort}>מיין</button>
+            <div>
+                <select value={filterCriteria} onChange={handleFilterChange}>
+                    <option value="none">נקה חיפוש</option>
+                    <option value="id">מספר זהות</option>
+                    <option value="familyName">שם משפחה</option>
+                    <option value="fatherName">שם אב</option>
+                    <option value="motherName">שם אם</option>
+                    <option value="numOfChildren">מספר ילדים</option>
+                    <option value="fatherOccupation">עיסוק אב</option>
+                    <option value="agesRangeOfChildren">ילדים בטווח גילאים</option>
+                    <option value="all">הצגת הכל</option>
+                </select>
+                {renderFilterInput()}
+                <button onClick={handleFilter}>חיפוש</button>
+            </div>
             <table style={{ borderCollapse: "collapse", width: "100%", direction: "rtl" }}>
                 <thead>
                     <tr style={{ backgroundColor: "#ccd" }}>
@@ -62,13 +148,15 @@ export default function FamilyInList() {
                             <td style={theadStyle}>{family.numberOfChildren}</td>
                             <td style={theadStyle}>{family.husbandsOccupation}</td>
                             <td style={theadStyle}>{family.street}</td>
-                            <td style={theadStyle}>לפרטים נוספים לחץ <a onClick={() => handleDisplayingFullDetails(family.familyIndex)}>כאן</a></td>
+                            <td style={theadStyle}>
+                                לפרטים נוספים לחץ <a onClick={() => handleDisplayingFullDetails(family.familyIndex)}>כאן</a>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <button onClick={handleLodingMoreFamilies}>טען עוד</button>
+            {errorMessage && <h4 style={{ textAlign: "center" }}>{errorMessage}</h4>}
+            {hasMoreData && <button onClick={handleLoadingMoreFamilies}>טען עוד</button>}
         </>
     );
 }
-
