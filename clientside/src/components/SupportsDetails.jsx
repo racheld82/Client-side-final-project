@@ -4,7 +4,7 @@ const SupportsDetails = ({ familyIndex }) => {
   const [supportData, setSupportData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/supports/familyIndex/${familyIndex}`)
+    fetch(`http://localhost:8080/supports/?familyIndex=${familyIndex}`)
       .then((response) => response.json())
       .then((data) => setSupportData(data));
   }, [familyIndex]);

@@ -4,7 +4,7 @@ const DebtsDetails = ({ familyIndex }) => {
   const [debtData, setDebtData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/debts/${familyIndex}`)
+    fetch(`http://localhost:8080/debts?familyIndex=${familyIndex}`)
       .then((response) => response.json())
       .then((data) => setDebtData(data));
   }, [familyIndex]);

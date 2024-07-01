@@ -4,7 +4,7 @@ const ExpensesDetails = ({ familyIndex }) => {
   const [expenseData, setExpenseData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/expenses/${familyIndex}`)
+    fetch(`http://localhost:8080/expenses?familyIndex=${familyIndex}`)
       .then((response) => response.json())
       .then((data) => setExpenseData(data));
   }, [familyIndex]);

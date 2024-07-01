@@ -6,11 +6,11 @@ const FamilyDetails = ({ familyIndex }) => {
   const [bankData, setBankData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/member/?familyIndex=${familyIndex}`)
+    fetch(`http://localhost:8080/member?familyIndex=${familyIndex}`)
       .then((response) => response.json())
       .then((data) => {
         setFamilyData(data);
-        fetch(`http://localhost:8080/bankAccount/${familyIndex}`)
+        fetch(`http://localhost:8080/bankAccount?familyIndex=${familyIndex}`)
           .then((response) => response.json())
           .then((data) => setBankData(data));
       });
