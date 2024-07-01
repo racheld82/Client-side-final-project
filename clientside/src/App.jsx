@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
 import FamilyInList from './components/FamilyInLIst'
 import FamilyMain from './components/FamilyMain'
+import LoginPage from './components/LoginPage';
+import FamilyDetails from './components/FamilyDetails';
 
 function App() {
 
@@ -11,8 +13,9 @@ function App() {
     <>
       <Router>
             <Routes>
-                <Route path="/" element={<FamilyInList />} />
-                <Route path="/family/:familyIndex" element={<FamilyMain />} />
+                <Route path="/" element={<LoginPage />} />
+                <Route path="/families" element={<FamilyMain />} />
+                <Route path="/families/:familyIndex" element={<FamilyDetails />} />
             </Routes>
         </Router>
     </>
