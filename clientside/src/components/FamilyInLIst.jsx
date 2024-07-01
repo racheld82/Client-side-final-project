@@ -6,12 +6,14 @@ export default function FamilyInList() {
     const navigate = useNavigate();
     const [families, setFamilies] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-    const [limit] = useState(1);
+    const [limit] = useState(20);
     const [offset, setOffset] = useState(0);
     const [hasMoreData, setHasMoreData] = useState(true);
-    const [sortCriteria, setSortCriteria] = useState('none');
-    const [filterCriteria, setFilterCriteria] = useState('none'); 
-    const [filterValue, setFilterValue] = useState(''); 
+    const [sortCriterion, setSortCriterion] = useState('none');
+    const [filterCriterion, setFilterCriterion] = useState('none');
+    const [filterValue, setFilterValue] = useState('');
+    const [filterUrl, setFilterUrl] = useState(`http://localhost:8080/member?_limit=${limit}&_offset=${offset}`);
+    const [selectedFilter, setSelectedFilter] = useState('none'); 
     const theadStyle = {
         border: "1px solid black",
         padding: "8px"
@@ -20,8 +22,8 @@ export default function FamilyInList() {
     const fetchFamilies = (newOffset, alternateUrl = "", append = false) => {
         setErrorMessage("");
         let url = "";
-        if (alternateUrl) url = alternateUrl
-        else url = `http://localhost:8080/member?_limit=${limit}&_offset=${newOffset}`;        
+        if (alternateUrl) url = alternateUrl;
+        else url = `http://localhost:8080/member?_limit=${limit}&_offset=${newOffset}`;
         fetch(url)
             .then((response) => {
                 if (response.ok) return response.json();
@@ -37,23 +39,23 @@ export default function FamilyInList() {
                     }
                     setOffset(newOffset + limit);
                     if (result.data.length < limit) {
-                        setHasMoreData(false); 
+                        setHasMoreData(false);
                     }
                 } else {
                     throw new Error("No data field in response");
                 }
             }).catch(error => {
-                console.error("Error fetching data:", error);  
+                console.error("Error fetching data:", error);
                 setErrorMessage("No families found");
             });
     };
 
     useEffect(() => {
-        fetchFamilies(0); 
+        fetchFamilies(0);
     }, []);
 
     const handleLoadingMoreFamilies = () => {
-        fetchFamilies(offset, true); 
+        fetchFamilies(offset, true);
     };
 
     const handleDisplayingFullDetails = (familyIndex) => {
@@ -61,38 +63,53 @@ export default function FamilyInList() {
     };
 
     const handleSortChange = (event) => {
-        setSortCriteria(event.target.value);
+        setSortCriterion(event.target.value);
     };
 
     const handleSort = () => {
-        switch (sortCriteria) {
-            case 'numOfChildren':            
+        switch (sortCriterion) {
+            case 'numOfChildren':
             case 'none':
                 return families;
         }
-    };
-
-    const handleFilterChange = (event) => {
-        setFilterCriteria(event.target.value);
-        setFilterValue('');
     };
 
     const handleFilterValueChange = (event) => {
         setFilterValue(event.target.value);
     };
 
-    const handleFilter = (criteria) => {
-        switch (criteria) {
-            case 'none':
-                
-        }
-        fetchFamilies(0); 
-    }
+    const handleDisplayInputFilter = (criterion) => {
+        setSelectedFilter(criterion);
+        setFilterValue('');
+    };
+
+    const handleFilter = () => {
+        return <h3>handle filter function</h3>;
+    };
 
     const renderFilterInput = () => {
-        switch (filterCriteria) {
+        switch (selectedFilter) {
+            case 'fatherId':
+                return <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס מספר זהות אב" />;
+            case 'motherId':
+                return <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס מספר זהות אם" />;
+            case 'familyName':
+                return <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס שם משפחה" />;
+            case 'fatherName':
+                return <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס שם אב" />;
+            case 'motherName':
+                return <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס שם אם" />;
             case 'numOfChildren':
-                return <input type="number" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס מספר ילדים" />;
+                return <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס מספר ילדים" />;
+            case 'fatherOccupation':
+                return (
+                    <select value={filterValue} onChange={handleFilterValueChange}>
+                        <option value="">בחר עיסוק אב</option>
+                        <option value="לומד">לומד</option>
+                        <option value="לומד חצי יום">לומד חצי יום</option>
+                        <option value="עובד">עובד</option>
+                    </select>
+                );
             case 'agesRangeOfChildren':
                 return (
                     <select value={filterValue} onChange={handleFilterValueChange}>
@@ -104,29 +121,30 @@ export default function FamilyInList() {
                     </select>
                 );
             default:
-                return <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס ערך חיפוש" />;
+                return null;
         }
     };
 
     return (
-        <>            
-            <select value={sortCriteria} onChange={handleSortChange}>
+        <>
+            <select value={sortCriterion} onChange={handleSortChange}>
                 <option value="numOfChildren">מספר ילדים</option>
                 <option value="none">none</option>
             </select>
             <button onClick={handleSort}>מיין</button>
-            <div className='filter-div'>                
+            <div className='filter-div'>
                 <p>:סנן לפי</p>
-                <button id='none' onClick={() => handleFilter('none')}>נקה חיפוש</button>
-                <button id='id' onClick={() => handleFilter('id')}>מספר זהות</button>
-                <button id='familyName' onClick={() => handleFilter('familyName')}>שם משפחה</button>
-                <button id='fatherName' onClick={() => handleFilter('fatherName')}>שם אב</button>
-                <button id='motherName' onClick={() => handleFilter('motherName')}>שם אם</button>
-                <button id='numOfChildren' onClick={() => handleFilter('numOfChildren')}>מספר ילדים</button>
-                <button id='fatherOccupation' onClick={() => handleFilter('fatherOccupation')}>עיסוק אב</button>
-                <button id='agesRangeOfChildren' onClick={() => handleFilter('agesRangeOfChildren')}>ילדים בטווח גילאים</button>
-                <button id='all' onClick={() => handleFilter('all')}></button>
-                {/* {renderFilterInput()}                 */}
+                <button id='none' onClick={() => handleDisplayInputFilter('none')}>נקה חיפוש</button>
+                <button id='fatherId' onClick={() => handleDisplayInputFilter('fatherId')}>מספר זהות אב</button>
+                <button id='motherId' onClick={() => handleDisplayInputFilter('motherId')}>מספר זהות אם</button>
+                <button id='familyName' onClick={() => handleDisplayInputFilter('familyName')}>שם משפחה</button>
+                <button id='fatherName' onClick={() => handleDisplayInputFilter('fatherName')}>שם אב</button>
+                <button id='motherName' onClick={() => handleDisplayInputFilter('motherName')}>שם אם</button>
+                <button id='numOfChildren' onClick={() => handleDisplayInputFilter('numOfChildren')}>מספר ילדים</button>
+                <button id='fatherOccupation' onClick={() => handleDisplayInputFilter('fatherOccupation')}>עיסוק אב</button>
+                <button id='agesRangeOfChildren' onClick={() => handleDisplayInputFilter('agesRangeOfChildren')}>ילדים בטווח גילאים</button>
+                <button id='all' onClick={() => handleDisplayInputFilter('all')}></button>
+                {renderFilterInput()}
             </div>
             <table style={{ borderCollapse: "collapse", width: "100%", direction: "rtl" }}>
                 <thead>
