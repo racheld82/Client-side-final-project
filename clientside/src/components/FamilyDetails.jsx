@@ -78,11 +78,11 @@ const FamilyDetails = ({ familyIndex }) => {
         </tbody>
       </table>
       <div>
-        <Link to={`/children/${familyId}`}>טען פרטי ילדים</Link>
-        <Link to={`/income/${familyId}`}>טען הכנסות</Link>
-        <Link to={`/expenses/${familyId}`}>טען הוצאות</Link>
-        <Link to={`/debts/${familyId}`}>טען חובות</Link>
-        <Link to={`/supports/${familyId}`}>טען תמיכות אחרונות</Link>
+        <Link to={`/children/${familyIndex}`}>טען פרטי ילדים</Link>
+        <Link to={`/income/${familyIndex}`}>טען הכנסות</Link>
+        <Link to={`/expenses/${familyIndex}`}>טען הוצאות</Link>
+        <Link to={`/debts/${familyIndex}`}>טען חובות</Link>
+        <Link to={`/supports/${familyIndex}`}>טען תמיכות אחרונות</Link>
       </div>
     </div>
   );
