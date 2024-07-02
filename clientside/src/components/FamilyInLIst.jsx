@@ -38,8 +38,7 @@ export default function FamilyInList() {
                 if (response.ok) return response.json();
                 else throw new Error("Failed to fetch data");
             })
-            .then((result) => {
-                console.log("Fetched data:", result);  // Debugging statement
+            .then((result) => {                
                 if (result.data) {
                     if (append) {
                         setFamilies(prevFamilies => [...prevFamilies, ...result.data]);
@@ -68,7 +67,7 @@ export default function FamilyInList() {
     };
 
     const handleDisplayingFullDetails = (familyIndex) => {
-        navigate(`/family/${familyIndex}`);
+        navigate(`/families/${familyIndex}`);
     };
 
     const handleSortChange = (event) => {

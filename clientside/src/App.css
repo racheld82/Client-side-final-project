@@ -18,9 +18,37 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-/* .filter-div{
-  margin: 0px, 5px;
+/* styles.css */
+.table-container .bank-details{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px; /* Reduce space between tables and surrounding elements */
+  overflow-x: auto; /* Enable horizontal scrolling for wide tables */
+}
+
+.table-container table, .bank-details table{
+  width: 48%; /* Adjust width as needed */
+  border-collapse: collapse;
+  margin-bottom: 10px; /* Adjust spacing between tables */  
+}
+
+.table-container th, .table-container td, .bank-details th, .bank-details td{
+  border: 1px solid black;
+  padding: 8px;
+  text-align: right; /* Align text to the right */
+}
+
+.table-container th, .bank-details th{
+  background-color: #ccd;
+  font-weight: bold;
+}
+
+
+/* .bank-details {
+  justify-items: center;
 } */
+
 
 @keyframes logo-spin {
   from {

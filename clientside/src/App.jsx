@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
 import FamilyInList from './components/FamilyInList.jsx'
-import FamilyMain from './components/FamilyMain'
 import LoginPage from './components/LoginPage';
 import FamilyDetails from './components/FamilyDetails';
 
@@ -16,6 +15,7 @@ function App() {
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/families" element={<FamilyInList />} />
                 <Route path="/families/:familyIndex" element={<FamilyDetails />} />
+                
             </Routes>
         </Router>
     </>
