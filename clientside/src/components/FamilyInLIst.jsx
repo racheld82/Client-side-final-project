@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { useNavigate } from "react-router-dom";
+import FamilyDetails from './FamilyDetails'; // Import the FamilyDetails component
 
 export default function FamilyInList() {
     const navigate = useNavigate();
@@ -9,12 +10,12 @@ export default function FamilyInList() {
     const [limit] = useState(20);
     const [offset, setOffset] = useState(0);
     const [hasMoreData, setHasMoreData] = useState(true);
-    const [sortCriterion, setSortCriterion] = useState('none');
-    const [filterCriterion, setFilterCriterion] = useState('none');
-    const [filterValue, setFilterValue] = useState('');
-    const [filterUrl, setFilterUrl] = useState(`http://localhost:8080/member?_limit=${limit}&_offset=${offset}`);
+    const [sortCriterion, setSortCriterion] = useState('none');   
+    const [filterValue, setFilterValue] = useState(''); 
     const [currentSelectedFilter, setCurrentSelectedFilter] = useState('none');
     const [activeFilters, setActiveFilters] = useState([]);
+    const [selectedFamily, setSelectedFamily] = useState(null); // State to hold the selected family
+
     const theadStyle = {
         border: "1px solid black",
         padding: "8px"
@@ -22,23 +23,32 @@ export default function FamilyInList() {
     const activeFilterStyle = {
         backgroundColor: 'blue',
         color: 'white'
-    }
+    };
     const defaultFilterStyle = {
         backgroundColor: 'white',
         color: 'black'
-    }
+    };
 
-    const fetchFamilies = (newOffset, alternateUrl = "", append = false) => {
+    const fetchFamilies = (newOffset, append = false) => {
         setErrorMessage("");
-        let url = "";
-        if (alternateUrl) url = alternateUrl;
-        else url = `http://localhost:8080/member?_limit=${limit}&_offset=${newOffset}`;
+        let url = `http://localhost:8080/member?_limit=${limit}&_offset=${newOffset}`;       
+    
+        if (currentSelectedFilter !== 'none' && currentSelectedFilter !== 'all' && filterValue) {
+            if (url.includes('?')) {
+                url += `&${currentSelectedFilter}=${filterValue}`;
+            } else {
+                url += `?${currentSelectedFilter}=${filterValue}`;
+            }
+            console.log("url when filtering: ", url);
+        }
+    
         fetch(url)
             .then((response) => {
                 if (response.ok) return response.json();
                 else throw new Error("Failed to fetch data");
             })
-            .then((result) => {                
+            .then((result) => {
+                console.log("Fetched data:", result);  // Debugging statement
                 if (result.data) {
                     if (append) {
                         setFamilies(prevFamilies => [...prevFamilies, ...result.data]);
@@ -57,17 +67,17 @@ export default function FamilyInList() {
                 setErrorMessage("No families found");
             });
     };
-
-    useEffect(() => {
-        fetchFamilies(0);
-    }, []);
-
+    
     const handleLoadingMoreFamilies = () => {
         fetchFamilies(offset, true);
     };
 
-    const handleDisplayingFullDetails = (familyIndex) => {
-        navigate(`/families/${familyIndex}`);
+    const handleDisplayingFullDetails = (family) => {
+        setSelectedFamily(family); // Set the selected family to display details
+    };
+
+    const handleCloseDetails = () => {
+        setSelectedFamily(null); // Close the family details view
     };
 
     const handleSortChange = (event) => {
@@ -76,7 +86,7 @@ export default function FamilyInList() {
 
     const handleSort = () => {
         switch (sortCriterion) {
-            case 'numOfChildren':
+            case 'numberOfChildren':
             case 'none':
                 return families;
         }
@@ -86,43 +96,49 @@ export default function FamilyInList() {
         setFilterValue(event.target.value);
     };
 
-    const handleDisplayInputFilter = (criterion, event) => {
-        event.persist(); // Ensure event is persisted if needed
+    const handleDisplayInputFilter = (criterion, event) => {        
         setActiveFilters((prevFilters) => {
             let newFilters;
-            if (prevFilters.includes(criterion)) {              
-                newFilters = prevFilters.filter(activeFilter => activeFilter !== criterion);
-                event.target.style.backgroundColor = defaultFilterStyle.backgroundColor; 
-                event.target.style.color = defaultFilterStyle.color;
-            } else {             
-                newFilters = [...prevFilters, criterion];
-                event.target.style.backgroundColor = activeFilterStyle.backgroundColor; 
-                event.target.style.color = activeFilterStyle.color; 
+            if (prevFilters.includes(criterion)) {
+                newFilters = prevFilters.filter(activeFilter => activeFilter !== criterion);                
+            } else {
+                newFilters = [...prevFilters, criterion];                
+                setFilterValue('');
             }
             return newFilters;
-        });
+        });    
         setCurrentSelectedFilter(criterion);
+    };
+
+    const handleFilterSubmit = () => {       
+        fetchFamilies(0);
+    };
+
+    const handleClearFilter = () => {
+        setActiveFilters([]);
+        setCurrentSelectedFilter('none');
         setFilterValue('');
+        setFamilies([]);
+        setErrorMessage("No families found");        
     };
 
-    const handleFilterSubmit = () => {
-
+    const handleNoFilter = () => {
+        setActiveFilters([]);
+        setCurrentSelectedFilter('none');
+        setFilterValue('');       
+        fetchFamilies(0, false);
     };
 
-    const renderFilterInput = () => {
-        if (!activeFilters.includes(currentSelectedFilter)) {
-            return null; // Hide the input if the current filter is not active
-        }
-
+    const renderFilterInput = () => {        
         switch (currentSelectedFilter) {
-            case 'fatherId':
+            case 'husbandId':
                 return (
                     <>
                         <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס מספר זהות אב" />
                         <button onClick={handleFilterSubmit}>סנן</button>
                     </>
                 );
-            case 'motherId':
+            case 'wifeId':
                 return (
                     <>
                         <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס מספר זהות אם" />
@@ -136,28 +152,28 @@ export default function FamilyInList() {
                         <button onClick={handleFilterSubmit}>סנן</button>
                     </>
                 );
-            case 'fatherName':
+            case 'husbandName':
                 return (
                     <>
                         <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס שם אב" />
                         <button onClick={handleFilterSubmit}>סנן</button>
                     </>
                 );
-            case 'motherName':
+            case 'wifeName':
                 return (
                     <>
                         <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס שם אם" />
                         <button onClick={handleFilterSubmit}>סנן</button>
                     </>
                 );
-            case 'numOfChildren':
+            case 'numberOfChildren':
                 return (
                     <>
                         <input type="text" value={filterValue} onChange={handleFilterValueChange} placeholder="הכנס מספר ילדים" />
                         <button onClick={handleFilterSubmit}>סנן</button>
                     </>
                 );
-            case 'fatherOccupation':
+            case 'husbandOccupation':
                 return (
                     <>
                         <select value={filterValue} onChange={handleFilterValueChange}>
@@ -169,76 +185,65 @@ export default function FamilyInList() {
                         <button onClick={handleFilterSubmit}>סנן</button>
                     </>
                 );
-            case 'agesRangeOfChildren':
-                return (
-                    <>
-                        <select value={filterValue} onChange={handleFilterValueChange}>
-                            <option value="">בחר טווח גילאים</option>
-                            <option value="0-5">ילדים מגיל 0-5</option>
-                            <option value="5-10">ילדים מגיל 5-10</option>
-                            <option value="10-15">ילדים מגיל 10-15</option>
-                            <option value="15-20">ילדים מגיל 15-20</option>
-                        </select>
-                        <button onClick={handleFilterSubmit}>סנן</button>
-                    </>
-                );
             default:
                 return null;
         }
     };
 
-
     return (
         <>
             <select value={sortCriterion} onChange={handleSortChange}>
-                <option value="numOfChildren">מספר ילדים</option>
+                <option value="numberOfChildren">מספר ילדים</option>
                 <option value="none">none</option>
             </select>
             <button onClick={handleSort}>מיין</button>
             <div className='filter-div'>
                 <p>:סנן לפי</p>
-                <button id='none' onClick={(event) => handleDisplayInputFilter('none', event)}>נקה חיפוש</button>
-                <button id='fatherId' onClick={(event) => handleDisplayInputFilter('fatherId', event)}>מספר זהות אב</button>
-                <button id='motherId' onClick={(event) => handleDisplayInputFilter('motherId', event)}>מספר זהות אם</button>
-                <button id='familyName' onClick={(event) => handleDisplayInputFilter('familyName', event)}>שם משפחה</button>
-                <button id='fatherName' onClick={(event) => handleDisplayInputFilter('fatherName', event)}>שם אב</button>
-                <button id='motherName' onClick={(event) => handleDisplayInputFilter('motherName', event)}>שם אם</button>
-                <button id='numOfChildren' onClick={(event) => handleDisplayInputFilter('numOfChildren', event)}>מספר ילדים</button>
-                <button id='fatherOccupation' onClick={(event) => handleDisplayInputFilter('fatherOccupation', event)}>עיסוק אב</button>
-                <button id='agesRangeOfChildren' onClick={(event) => handleDisplayInputFilter('agesRangeOfChildren', event)}>ילדים בטווח גילאים</button>
-                <button id='all' onClick={(event) => handleDisplayInputFilter('all')}></button>
+                <button id='all' onClick={(event) => handleNoFilter()} style={activeFilters.includes('all') ? activeFilterStyle : defaultFilterStyle}>ללא סינון</button>
+                <button id='none' onClick={handleClearFilter}>נקה חיפוש</button>
+                <button id='husbandId' onClick={(event) => handleDisplayInputFilter('husbandId', event)} style={activeFilters.includes('husbandId') ? activeFilterStyle : defaultFilterStyle}>מספר זהות אב</button>
+                <button id='wifeId' onClick={(event) => handleDisplayInputFilter('wifeId', event)} style={activeFilters.includes('wifeId') ? activeFilterStyle : defaultFilterStyle}>מספר זהות אם</button>
+                <button id='familyName' onClick={(event) => handleDisplayInputFilter('familyName', event)} style={activeFilters.includes('familyName') ? activeFilterStyle : defaultFilterStyle}>שם משפחה</button>
+                <button id='husbandName' onClick={(event) => handleDisplayInputFilter('husbandName', event)} style={activeFilters.includes('husbandName') ? activeFilterStyle : defaultFilterStyle}>שם אב</button>
+                <button id='wifeName' onClick={(event) => handleDisplayInputFilter('wifeName', event)} style={activeFilters.includes('wifeName') ? activeFilterStyle : defaultFilterStyle}>שם אם</button>
+                <button id='numberOfChildren' onClick={(event) => handleDisplayInputFilter('numberOfChildren', event)} style={activeFilters.includes('numberOfChildren') ? activeFilterStyle : defaultFilterStyle}>מספר ילדים</button>
+                <button id='husbandOccupation' onClick={(event) => handleDisplayInputFilter('husbandOccupation', event)} style={activeFilters.includes('husbandOccupation') ? activeFilterStyle : defaultFilterStyle}>עיסוק אב</button>
                 {renderFilterInput()}
             </div>
             <table style={{ borderCollapse: "collapse", width: "100%", direction: "rtl" }}>
                 <thead>
                     <tr style={{ backgroundColor: "#ccd" }}>
                         <th style={theadStyle}>שם משפחה</th>
-                        <th style={theadStyle}>ת.ז. אב</th>
-                        <th style={theadStyle}>ת.ז. אם</th>
+                        <th style={theadStyle}>מספר זהות אב</th>
+                        <th style={theadStyle}>מספר זהות אם</th>
                         <th style={theadStyle}>מספר ילדים</th>
-                        <th style={theadStyle}>עיסוק האב</th>
+                        <th style={theadStyle}>עיסוק אב</th>
                         <th style={theadStyle}>רחוב</th>
-                        <th style={theadStyle}>לפרטים מלאים</th>
+                        <th style={theadStyle}>פרטים מלאים</th>
                     </tr>
                 </thead>
                 <tbody>
                     {families.map((family, index) => (
-                        <tr key={index} style={{ backgroundColor: index % 2 === 0 ? "#ccc" : "#fff" }}>
+                        <tr key={index} style={{ backgroundColor: index % 2 === 0 ? "#fff" : "#eee" }}>
                             <td style={theadStyle}>{family.familyName}</td>
                             <td style={theadStyle}>{family.husbandId}</td>
                             <td style={theadStyle}>{family.wifeId}</td>
                             <td style={theadStyle}>{family.numberOfChildren}</td>
-                            <td style={theadStyle}>{family.husbandsOccupation}</td>
+                            <td style={theadStyle}>{family.husbandOccupation}</td>
                             <td style={theadStyle}>{family.street}</td>
-                            <td style={theadStyle}>
-                                לפרטים נוספים לחץ <a onClick={() => handleDisplayingFullDetails(family.familyIndex)}>כאן</a>
-                            </td>
+                            <td style={theadStyle}><button onClick={() => handleDisplayingFullDetails(family)}>לפרטים מלאים</button></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            {errorMessage && <h4 style={{ textAlign: "center" }}>{errorMessage}</h4>}
-            {hasMoreData && <button onClick={handleLoadingMoreFamilies}>טען עוד</button>}
+            {hasMoreData && (
+                <button onClick={handleLoadingMoreFamilies}>Load More Families</button>
+            )}
+            {errorMessage && <p>{errorMessage}</p>}
+
+            {selectedFamily && ( // Render the FamilyDetails component if a family is selected
+                <FamilyDetails family={selectedFamily} onClose={handleCloseDetails} />
+            )}
         </>
     );
 }
