@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
-import FamilyInList from './components/FamilyInList';
-import LoginPage from './components/LoginPage';
-import FamilyDetails from './components/FamilyDetails';
+import FamilyInList from './components/FamilyInLIst.jsx';
+import LoginPage from './components/LoginPage.jsx';
+import FamilyDetails from './components/FamilyDetails.jsx';
 import FileUpload from './components/FileUpload.jsx';
 
 function App() {

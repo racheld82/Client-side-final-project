@@ -6,6 +6,7 @@ import ExpensesDetails from './ExpensesDetails';
 import DebtsDetails from './DebtsDetails';
 import SupportsDetails from './SupportsDetails';
 
+
 const FamilyDetails = () => {
   const { familyIndex } = useParams();
   const navigate = useNavigate();
