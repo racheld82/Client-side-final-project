@@ -10,7 +10,7 @@ const IncomesDetails = ({ familyIndex }) => {
   }, [familyIndex]);
 
   return (
-    <div>
+    <div className="table-container">
       <h2>הכנסות</h2>
       <table>
         <thead>

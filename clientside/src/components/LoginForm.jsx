@@ -24,6 +24,7 @@ const LoginForm = ({ handleLogin }) => {
       });
 
       const data = await response.json();
+      console.log(data)
 
       if (response.ok) {
         handleLogin(true); // Call parent function to handle successful login

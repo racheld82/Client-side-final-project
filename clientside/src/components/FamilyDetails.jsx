@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import ChildrenDetails from './ChildrenDetails';
+import IncomesDetails from './IncomesDetails';
+import ExpensesDetails from './ExpensesDetails';
+import DebtsDetails from './DebtsDetails';
+import SupportsDetails from './SupportsDetails';
 
 const FamilyDetails = () => {
   const { familyIndex } = useParams();
+  const navigate = useNavigate();
   const [familyData, setFamilyData] = useState([]);
   const [bankData, setBankData] = useState([]);
+  const [childrenOn, setChildrenOn] = useState(false);
+  const [incomesOn, setIncomesOn] = useState(false);
+  const [expensesOn, setExpensesON] = useState(false);
+  const [debtsOn, setDebtsOn] = useState(false);
+  const [supportsOn, setSupportsOn] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8080/member?familyIndex=${familyIndex}`)
@@ -13,7 +24,7 @@ const FamilyDetails = () => {
         setFamilyData(result.data[0]);
         fetch(`http://localhost:8080/bankAccount?familyIndex=${familyIndex}`)
           .then((response) => response.json())
-          .then((data) => {console.log("data: ", data);setBankData(data)});
+          .then((result) => { setBankData(result.data[0]) });
       });
   }, [familyIndex]);
 
@@ -73,14 +84,14 @@ const FamilyDetails = () => {
         </table>
       </div>
       <div className='request-container'>
-        
-            {familyData ? <>
-              <p>:תיאור הבקשה</p>
-              <p>{familyData.descriptionAndRequest}</p></> : null}
-          
+
+        {familyData ? <>
+          <p>:תיאור הבקשה</p>
+          <p>{familyData.descriptionAndRequest}</p></> : null}
+
       </div>
       <h3>פרטי בנק</h3>
-      <div className="bank-details">        
+      <div className="bank-details">
         <table>
           <tbody>
             <tr>
@@ -97,11 +108,31 @@ const FamilyDetails = () => {
         </table>
       </div>
       <div>
-        <Link to={`/children/${familyIndex}`}>טען פרטי ילדים</Link>
-        <Link to={`/income/${familyIndex}`}>טען הכנסות</Link>
-        <Link to={`/expenses/${familyIndex}`}>טען הוצאות</Link>
-        <Link to={`/debts/${familyIndex}`}>טען חובות</Link>
-        <Link to={`/supports/${familyIndex}`}>טען תמיכות אחרונות</Link>
+        <button onClick={() => {navigate(`/family/${familyIndex}/files`);}}>צפה בקבצי המשפחה</button>        
+      </div>
+      <div className='hidden-details'>
+        <div>
+          <button onClick={() => { setChildrenOn(!childrenOn) }}>{!childrenOn ? "טען פרטי ילדים" : "הסתר פרטי ילדים"}</button>
+          {childrenOn && <ChildrenDetails familyIndex={familyIndex} />}
+        </div>
+        <div>
+          <button onClick={() => { setIncomesOn(!incomesOn) }}>{!incomesOn ? "טען הכנסות" : "הסתר הכנסות"}</button>
+          {incomesOn && <IncomesDetails familyIndex={familyIndex} />}
+        </div>
+        <div>
+          <button onClick={() => { setExpensesON(!expensesOn) }}>{!expensesOn ? "טען הוצאות" : "הסתר הוצאות"}</button>
+          {expensesOn && <ExpensesDetails familyIndex={familyIndex} />}
+        </div>
+        <div>
+          <button onClick={() => { setDebtsOn(!debtsOn) }}>{!debtsOn ? "טען חובות" : "הסתר חובות"}</button>
+          {debtsOn && <DebtsDetails familyIndex={familyIndex} />}
+        </div>
+        <div>
+          <button onClick={() => { setSupportsOn(!supportsOn) }}>{!supportsOn ? "טען תמיכות אחרונות" : "הסתר תמיכות אחרונות"}</button>
+          {supportsOn && <SupportsDetails familyIndex={familyIndex} />}
+        </div>
+      </div>
+      <div>
       </div>
     </div>
   );

@@ -44,6 +44,12 @@
   font-weight: bold;
 }
 
+.hidden-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 
 /* .bank-details {
   justify-items: center;

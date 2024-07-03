@@ -10,9 +10,9 @@ const SupportsDetails = ({ familyIndex }) => {
   }, [familyIndex]);
 
   return (
-    <div>
+    <div className="table-container">
       <h2>תמיכות אחרונות</h2>
-      <table>
+      <table >
         <thead>
           <tr>
             <th>ארגון</th>
