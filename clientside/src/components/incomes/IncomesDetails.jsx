@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import UpdateIncomesForm from './UpdateIncomesForm';
 
 const IncomesDetails = ({ familyIndex }) => {
   const [incomeData, setIncomeData] = useState([]);
   const [lastYearIncomeData, setLastYearIncomeData] = useState([]);
-  const YEAR=2024;
+  const [updatingIncomes, setUpdatingIncomes] = useState(false);
+  const YEAR = 2024;
 
 
   useEffect(() => {
     fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR}`)
       .then((response) => response.json())
-      .then((data) => setIncomeData(data));
+      .then((result) => setIncomeData(result.data[0]));
       fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR-1}`)
       .then((response) => response.json())
-      .then((data) => setLastYearIncomeData(data));
+      .then((result) => setLastYearIncomeData(result.data[0]));
 
   }, [familyIndex]);
 
@@ -32,9 +34,21 @@ const IncomesDetails = ({ familyIndex }) => {
   return message;
 }
 
+const handleCloseModal = () => {
+  setUpdatingIncomes(false);
+}
+
   return (
     <div className="table-container">
       <h2>הכנסות</h2>
+      <button onClick={() => setUpdatingIncomes(true)}>עריכת פרטים</button>
+      {updatingIncomes && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <UpdateIncomesForm familyIndex={familyIndex} onClose={handleCloseModal} />
+          </div>
+        </div>
+      )}
       <table>
         <thead>
           <tr>
@@ -55,12 +69,12 @@ const IncomesDetails = ({ familyIndex }) => {
           </tr>
         </thead>
         <tbody>
-          {incomeData.length > 0 ? (
+          {incomeData ? (
             <tr>
               <td>{incomeData.husbandIncomesSum}</td>
               <td>{incomeData.wifeIncomesSum}</td>
-              <td>{incomeData.addtionalIncomesDescription}</td>
-              <td>{incomeData.addtionalIncomesSum}</td>
+              <td>{incomeData.additionalIncomesDescription}</td>
+              <td>{incomeData.additionalIncomesSum}</td>
               <td>{incomeData.childAllowance}</td>
               <td>{incomeData.residualAllowance}</td>
               <td>{incomeData.disabilityFund}</td>
@@ -77,12 +91,12 @@ const IncomesDetails = ({ familyIndex }) => {
               <td colSpan="14">אין נתוני הכנסות זמינים</td>
             </tr>
           )}
-          {lastYearIncomeData.length > 0 ? (
+          {lastYearIncomeData ? (
             <tr>
               <td>{lastYearIncomeData.husbandIncomesSum}</td>
               <td>{lastYearIncomeData.wifeIncomesSum}</td>
-              <td>{lastYearIncomeData.addtionalIncomesDescription}</td>
-              <td>{lastYearIncomeData.addtionalIncomesSum}</td>
+              <td>{lastYearIncomeData.additionalIncomesDescription}</td>
+              <td>{lastYearIncomeData.additionalIncomesSum}</td>
               <td>{lastYearIncomeData.childAllowance}</td>
               <td>{lastYearIncomeData.residualAllowance}</td>
               <td>{lastYearIncomeData.disabilityFund}</td>

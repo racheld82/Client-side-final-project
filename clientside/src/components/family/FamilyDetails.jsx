@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import ChildrenDetails from './ChildrenDetails';
-import IncomesDetails from './IncomesDetails';
-import ExpensesDetails from './ExpensesDetails';
-import DebtsDetails from './DebtsDetails';
-import SupportsDetails from './SupportsDetails';
+import ChildrenDetails from '../children/ChildrenDetails';
+import IncomesDetails from '../incomes/IncomesDetails';
+import ExpensesDetails from '../expenses/ExpensesDetails';
+import DebtsDetails from '../debts/DebtsDetails';
+import SupportsDetails from '../supports/SupportsDetails';
 import UpdateFamilyForm from './UpdateFamilyForm';
+import UpdateBankForm from '../bank/UpdateBankForm';
 
 
 const FamilyDetails = () => {
@@ -19,6 +20,7 @@ const FamilyDetails = () => {
   const [debtsOn, setDebtsOn] = useState(false);
   const [supportsOn, setSupportsOn] = useState(false);
   const [updatingFamily, setUpdatingFamily] = useState(false);
+  const [updatingBank, setUpdatingBank] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8080/member?familyIndex=${familyIndex}`)
@@ -32,7 +34,8 @@ const FamilyDetails = () => {
   }, [familyIndex]);
 
   const handleCloseModal = () => {
-    setUpdatingFamily(false);
+    if(updatingFamily) setUpdatingFamily(false);
+    if(updatingBank) setUpdatingBank(false);    
   };
 
   return (
@@ -106,6 +109,14 @@ const FamilyDetails = () => {
 
       </div>
       <h3>פרטי בנק</h3>
+      <button onClick={() => setUpdatingBank(true)}>עריכת פרטים</button>
+      {updatingBank && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <UpdateBankForm familyIndex={familyIndex} onClose={handleCloseModal} />
+          </div>
+        </div>
+      )}
       <div className="bank-details">
         <table>
           <tbody>

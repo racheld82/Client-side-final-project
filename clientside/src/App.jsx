@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
-import FamilyInList from './components/FamilyInLIst.jsx';
-import LoginPage from './components/LoginPage.jsx';
-import FamilyDetails from './components/FamilyDetails.jsx';
-import FileUpload from './components/FileUpload.jsx';
+import FamilyInList from './components/family/FamilyInLIst.jsx';
+import LoginPage from './components/login/LoginPage.jsx';
+import FamilyDetails from './components/family/FamilyDetails.jsx';
+import FileUpload from './components/files/FileUpload.jsx';
 
 function App() {
 
