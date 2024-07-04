@@ -5,6 +5,7 @@ import IncomesDetails from './IncomesDetails';
 import ExpensesDetails from './ExpensesDetails';
 import DebtsDetails from './DebtsDetails';
 import SupportsDetails from './SupportsDetails';
+import UpdateFamilyForm from './UpdateFamilyForm';
 
 const FamilyDetails = () => {
   const { familyIndex } = useParams();
@@ -16,6 +17,7 @@ const FamilyDetails = () => {
   const [expensesOn, setExpensesON] = useState(false);
   const [debtsOn, setDebtsOn] = useState(false);
   const [supportsOn, setSupportsOn] = useState(false);
+  const [updatingFamily, setUpdatingFamily] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8080/member?familyIndex=${familyIndex}`)
@@ -28,9 +30,21 @@ const FamilyDetails = () => {
       });
   }, [familyIndex]);
 
+  const handleCloseModal = () => {
+    setUpdatingFamily(false);
+  };
+
   return (
     <div>
       <h2>פרטי משפחה</h2>
+      <button onClick={() => setUpdatingFamily(true)}>עריכת פרטים</button>
+      {updatingFamily && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <UpdateFamilyForm familyIndex={familyIndex} onClose={handleCloseModal} />
+          </div>
+        </div>
+      )}
       <div className="table-container">
         <table>
           <thead>
@@ -108,7 +122,7 @@ const FamilyDetails = () => {
         </table>
       </div>
       <div>
-        <button onClick={() => {navigate(`/family/${familyIndex}/files`);}}>צפה בקבצי המשפחה</button>        
+        <button onClick={() => { navigate(`/family/${familyIndex}/files`); }}>צפה בקבצי המשפחה</button>
       </div>
       <div className='hidden-details'>
         <div>
