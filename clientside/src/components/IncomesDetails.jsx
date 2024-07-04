@@ -2,12 +2,35 @@ import React, { useState, useEffect } from 'react';
 
 const IncomesDetails = ({ familyIndex }) => {
   const [incomeData, setIncomeData] = useState([]);
+  const [lastYearIncomeData, setLastYearIncomeData] = useState([]);
+  const YEAR=2024;
+
 
   useEffect(() => {
-    fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}`)
+    fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR}`)
       .then((response) => response.json())
       .then((data) => setIncomeData(data));
+      fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR-1}`)
+      .then((response) => response.json())
+      .then((data) => setLastYearIncomeData(data));
+
   }, [familyIndex]);
+
+  const IncomesMonitor=()=>{
+    const incomeDifference = incomeData.totalIncomes - lastYearIncomeData.totalIncomes;
+    const incomeChangePercentage = (incomeDifference / lastYearIncomeData.totalIncomes) * 100;
+
+  let message;
+  if (incomeDifference > 0) {
+      message = `ההכנסות גדלו ב ${incomeChangePercentage.toFixed(2)}%`;
+  } else if (incomeDifference < 0) {
+    message = `ההכנסות קטנו ב ${Math.abs(incomeChangePercentage.toFixed(2))}%`;
+  } else {
+    message = `ההכנסות לא השתנו משנה לשנה`;
+  }
+
+  return message;
+}
 
   return (
     <div className="table-container">
@@ -54,8 +77,31 @@ const IncomesDetails = ({ familyIndex }) => {
               <td colSpan="14">אין נתוני הכנסות זמינים</td>
             </tr>
           )}
+          {lastYearIncomeData.length > 0 ? (
+            <tr>
+              <td>{lastYearIncomeData.husbandIncomesSum}</td>
+              <td>{lastYearIncomeData.wifeIncomesSum}</td>
+              <td>{lastYearIncomeData.addtionalIncomesDescription}</td>
+              <td>{lastYearIncomeData.addtionalIncomesSum}</td>
+              <td>{lastYearIncomeData.childAllowance}</td>
+              <td>{lastYearIncomeData.residualAllowance}</td>
+              <td>{lastYearIncomeData.disabilityFund}</td>
+              <td>{lastYearIncomeData.guaranteedIncome}</td>
+              <td>{lastYearIncomeData.rentAssitance}</td>
+              <td>{lastYearIncomeData.alimony}</td>
+              <td>{lastYearIncomeData.familySupport}</td>
+              <td>{lastYearIncomeData.charitySupport}</td>
+              <td>{lastYearIncomeData.propertyIncomes}</td>
+              <td>{lastYearIncomeData.totalIncomes}</td>
+            </tr>
+          ) : (
+            <tr>
+              <td colSpan="14">אין נתוני הכנסות קודמים זמינים</td>
+            </tr>
+          )}
         </tbody>
       </table>
+      <p>{IncomesMonitor()}</p>
     </div>
   );
 };

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import FamilyDetails from './FamilyDetails'; // Import the FamilyDetails component
+import FamilyDetails from './FamilyDetails'; 
+import { utils as XLSXUtils, writeFile as writeExcelFile } from 'xlsx';
+
 
 export default function FamilyInList() {
     const navigate = useNavigate();
@@ -153,6 +155,26 @@ export default function FamilyInList() {
         fetchFamilies(0, false);
     };
 
+    const handleExportToExcel = () => {
+        const data = families.map(family => ({
+            'שם משפחה': family.familyName,
+            'מספר זהות אב': family.husbandId,
+            'מספר זהות אם': family.wifeId,
+            'מספר ילדים': family.numberOfChildren,
+            'עיסוק אב': family.husbandOccupation,
+            'רחוב': family.street
+        }));
+
+        const worksheet = XLSXUtils.json_to_sheet(data);
+        const workbook = XLSXUtils.book_new();
+        XLSXUtils.book_append_sheet(workbook, worksheet, 'משפחות');
+        const fileName = `families_${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+
+        // Save the Excel file
+        writeExcelFile(workbook, fileName);
+    };
+
     const renderFilterInput = () => {
         switch (currentSelectedFilter) {
             case 'husbandId':
@@ -263,7 +285,9 @@ export default function FamilyInList() {
             {hasMoreData && (
                 <button onClick={handleLoadingMoreFamilies}>Load More Families</button>
             )}
-            {errorMessage && <p>{errorMessage}</p>}            
+            {errorMessage && <p>{errorMessage}</p>}   
+            <button onClick={handleExportToExcel}>ייצא ל-EXCEL</button>
+         
         </>
     );
 }
