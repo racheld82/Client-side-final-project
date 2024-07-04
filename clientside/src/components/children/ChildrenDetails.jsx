@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import UpdateChildForm from './UpdateChildForm';
+import AddChildForm from './AddChildForm'
 
 const ChildrenDetails = ({ familyIndex }) => {
   const [childrenData, setChildrenData] = useState([]);
   const [updatingChild, setUpdatingChild] = useState(null);
-  const [addingChild, setSddingChild] = useState(false);
+  const [addingChild, setAddingChild] = useState(false);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   useEffect(() => {
@@ -18,7 +19,8 @@ const ChildrenDetails = ({ familyIndex }) => {
   }
 
   const handleCloseModal = () => {
-    setUpdatingChild(null);
+    if(updatingChild) setUpdatingChild(false);
+    if(addingChild) setAddingChild(false);
   }
 
   const handleDelete = (childId) => {
@@ -39,7 +41,7 @@ const ChildrenDetails = ({ familyIndex }) => {
         addingChild &&
         <div className="modal-overlay">
           <div className="modal-content">
-            <AddChildForm setClose={setAddingChild} />
+            <AddChildForm familyIndex={familyIndex} onClose={handleCloseModal} setChildrenData={setChildrenData}/>
           </div>
         </div>
       }

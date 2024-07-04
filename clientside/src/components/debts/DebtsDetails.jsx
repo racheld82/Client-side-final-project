@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import UpdateDebtsForm from './UpdateDebtsForm'
 
 const DebtsDetails = ({ familyIndex }) => {
   const [debtData, setDebtData] = useState([]);
+  const [updatingDebtsDetails, setUpdatingDebtsDetails] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8080/debts?familyIndex=${familyIndex}`)
       .then((response) => response.json())
-      .then((data) => setDebtData(data));
+      .then((result) => setDebtData(result.data[0]));
   }, [familyIndex]);
+
+  const handleCloseModal = () => {
+    setUpdatingDebtsDetails(false);
+  }
 
   return (
     <div className="table-container">
       <h2>חובות</h2>
+      <button onClick={() => setUpdatingDebtsDetails(true)}>עריכת פרטים</button>
+      {updatingDebtsDetails && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <UpdateDebtsForm familyIndex={familyIndex} onClose={handleCloseModal}  setParentDebts={setDebtData}/>
+          </div>
+        </div>
+      )}
       <table>
         <thead>
           <tr>
@@ -26,7 +40,7 @@ const DebtsDetails = ({ familyIndex }) => {
           </tr>
         </thead>
         <tbody>
-          {debtData.length > 0 ? (
+          {debtData ? (
             <tr>
               <td>{debtData.mortgageDebt}</td>
               <td>{debtData.mortgageRepayments}</td>

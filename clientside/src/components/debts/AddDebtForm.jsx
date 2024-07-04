@@ -29,12 +29,10 @@ const AddDebtForm = ({ familyIndex }) => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Debt added:', data);
-        // אפשר להוסיף פה ניווט או פעולות נוספות לאחר ההוספה
+        console.log('Debt added:', data);       
       })
       .catch(error => {
-        console.error('Error adding debt:', error);
-        // טיפול בשגיאות
+        console.error('Error adding debt:', error);       
       });
   };
 
@@ -42,31 +40,31 @@ const AddDebtForm = ({ familyIndex }) => {
     <div>
       <h2>הוספת חוב חדש</h2>
       <form onSubmit={handleSubmit}>
-        <label>משכנתא - חוב:</label>
+        <label>:משכנתא - חוב</label>
         <input type="number" name="mortgageDebt" value={debtData.mortgageDebt} onChange={handleInputChange} />
 
-        <label>משכנתא - תשלומים חודשיים:</label>
+        <label>:משכנתא - תשלומים חודשיים</label>
         <input type="number" name="mortgageRepayments" value={debtData.mortgageRepayments} onChange={handleInputChange} />
 
-        <label>גמ"ח - חוב:</label>
+        <label>:גמ"ח - חוב</label>
         <input type="number" name="gmachDebt" value={debtData.gmachDebt} onChange={handleInputChange} />
 
-        <label>גמ"ח - תשלומים חודשיים:</label>
+        <label>:גמ"ח - תשלומים חודשיים</label>
         <input type="number" name="gmachRepayments" value={debtData.gmachRepayments} onChange={handleInputChange} />
 
-        <label>הלוואות בנקאיות - חוב:</label>
+        <label>:הלוואות בנקאיות - חוב</label>
         <input type="number" name="bankLoansDebt" value={debtData.bankLoansDebt} onChange={handleInputChange} />
 
-        <label>הלוואות בנקאיות - תשלומים חודשיים:</label>
+        <label>:הלוואות בנקאיות - תשלומים חודשיים</label>
         <input type="number" name="bankLoansRepayments" value={debtData.bankLoansRepayments} onChange={handleInputChange} />
 
-        <label>הלוואות פרטיות - חוב:</label>
+        <label>:הלוואות פרטיות - חוב</label>
         <input type="number" name="outstandingLoansDebt" value={debtData.outstandingLoansDebt} onChange={handleInputChange} />
 
-        <label>הלוואות פרטיות - תשלומים חודשיים:</label>
+        <label>:הלוואות פרטיות - תשלומים חודשיים</label>
         <input type="number" name="outstandingLoansRepayments" value={debtData.outstandingLoansRepayments} onChange={handleInputChange} />
 
-        <button type="submit">הוסף חוב</button>
+        <button type="submit">שמירה</button>
       </form>
     </div>
   );

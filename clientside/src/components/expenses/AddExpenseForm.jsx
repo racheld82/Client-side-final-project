@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-const AddExpenseForm = ({ familyIndex }) => {
+const AddExpenseForm = ({ familyIndex, onClose, setParentExpenseData }) => {
   const [expenseData, setExpenseData] = useState({
     familyIndex: familyIndex,
     expenseDescription: '',
     expenseSum: '',
   });
+  const YEAR =  2024;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -14,7 +15,7 @@ const AddExpenseForm = ({ familyIndex }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:8080/expenses', {
+    fetch(`http://localhost:8080/expenses/${YEAR}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -24,11 +25,11 @@ const AddExpenseForm = ({ familyIndex }) => {
       .then(response => response.json())
       .then(data => {
         console.log('Expense added:', data);
-        // אפשר להוסיף פה ניווט או פעולות נוספות לאחר ההוספה
+        setParentExpenseData(prev => [...prev, expenseData]);
+        onClose();        
       })
       .catch(error => {
-        console.error('Error adding expense:', error);
-        // טיפול בשגיאות
+        console.error('Error adding expense:', error);       
       });
   };
 
@@ -36,13 +37,12 @@ const AddExpenseForm = ({ familyIndex }) => {
     <div>
       <h2>הוספת הוצאה חדשה</h2>
       <form onSubmit={handleSubmit}>
-        <label>תיאור הוצאה:</label>
+        <label>:תיאור הוצאה</label>
         <input type="text" name="expenseDescription" value={expenseData.expenseDescription} onChange={handleInputChange} required />
-
-        <label>סכום הוצאה:</label>
+        <label>:סכום הוצאה</label>
         <input type="number" name="expenseSum" value={expenseData.expenseSum} onChange={handleInputChange} required />
-
         <button type="submit">הוסף הוצאה</button>
+        <button onClick={() => onClose()}>ביטול</button>
       </form>
     </div>
   );

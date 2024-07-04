@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import AddSupportForm from './AddSupportForm';
 
 const SupportsDetails = ({ familyIndex }) => {
   const [supportData, setSupportData] = useState([]);
+  const [addingSupport, setAddingSupport] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8080/supports/?familyIndex=${familyIndex}`)
       .then((response) => response.json())
-      .then((data) => setSupportData(data));
+      .then((result) => setSupportData(result.data));
   }, [familyIndex]);
+
+  const handleCloseModal = () => {
+    setAddingSupport(false);
+  }
 
   return (
     <div className="table-container">
       <h2>תמיכות אחרונות</h2>
+      <button onClick={() => setAddingSupport(true)}>הוסף תמיכה</button>
+      {addingSupport &&
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <AddSupportForm familyIndex={familyIndex} onClose={handleCloseModal} setParentSupports={setSupportData}/>
+          </div>
+        </div>
+      }
       <table >
         <thead>
           <tr>
