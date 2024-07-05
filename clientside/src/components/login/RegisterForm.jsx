@@ -14,14 +14,12 @@ const RegisterForm = ({ handleRegister }) => {
       return;
     }
 
-    // Create an object with username and password
     const formData = {
       userName: userName,
       password: password
     };
 
     try {
-      // Send form data to server for registration
       const response = await fetch(`http://localhost:8080/users`, {
         method: 'POST',
         headers: {
@@ -33,9 +31,8 @@ const RegisterForm = ({ handleRegister }) => {
       const data = await response.json();
 
       if (response.ok) {
-        handleRegister(true); // Call parent function to handle successful registration
-        // Redirect or navigate to FAMILYMAIN page
-        window.location.href = '/FAMILYMAIN';
+        handleRegister(true); 
+        window.location.href = '/families';
       } else {
         alert('Registration failed. Username may already exist.');
       }

@@ -125,11 +125,16 @@ const FamilyDetails = () => {
               <th>סניף</th>
               <th>מספר חשבון</th>
             </tr>
-            <tr>
+            {bankData ?(<tr>
               <td>{bankData.bank}</td>
               <td>{bankData.branch}</td>
               <td>{bankData.account}</td>
-            </tr>
+            </tr>)
+            : (
+              <tr>
+                <td colSpan="17">אין נתונים זמינים</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

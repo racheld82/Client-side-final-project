@@ -18,14 +18,20 @@ const AddIncomeForm = ({ familyIndex }) => {
     propertyIncomes: '',
     totalIncomes: '',
   });
+  const [totalIncome, setTotalIncome]=useState(0);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if(name!='addtionalIncomesDescription')
+      setTotalIncome(totalIncome+value);
     setIncomeData({ ...incomeData, [name]: value });
+
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIncomeData({ ...incomeData, [totalIncomes]: totalIncome });
     fetch('http://localhost:8080/incomes', {
       method: 'POST',
       headers: {
@@ -36,11 +42,9 @@ const AddIncomeForm = ({ familyIndex }) => {
       .then(response => response.json())
       .then(data => {
         console.log('Income added:', data);
-        // אפשר להוסיף פה ניווט או פעולות נוספות לאחר ההוספה
       })
       .catch(error => {
         console.error('Error adding income:', error);
-        // טיפול בשגיאות
       });
   };
 
@@ -87,8 +91,8 @@ const AddIncomeForm = ({ familyIndex }) => {
         <label>הכנסות מנכסים:</label>
         <input type="number" name="propertyIncomes" value={incomeData.propertyIncomes} onChange={handleInputChange} />
 
-        <label>סך הכל הכנסות:</label>
-        <input type="number" name="totalIncomes" value={incomeData.totalIncomes} onChange={handleInputChange} required />
+        {/* <label>סך הכל הכנסות:</label>
+        <input type="number" name="totalIncomes" value={incomeData.totalIncomes} onChange={handleInputChange} required /> */}
 
         <button type="submit">הוסף הכנסה</button>
       </form>

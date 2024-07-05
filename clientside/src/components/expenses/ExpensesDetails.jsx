@@ -30,7 +30,7 @@ const ExpensesDetails = ({ familyIndex }) => {
 
   const ExpensesSum = (data, set) => {
     let t_expense = 0;
-    data.map((expense) => { t_expense += expense.expenseSum });
+    if(data) data.map((expense) => { t_expense += expense.expenseSum });
     set(t_expense);
   }
 
@@ -97,7 +97,7 @@ const ExpensesDetails = ({ familyIndex }) => {
           </tr>
         </thead>
         <tbody>
-          {expenseData.length > 0 ? (
+          {expenseData ? (
             expenseData.map((expense) => (
               <tr key={expense.expenseDescription}>
                 <td>{expense.expenseDescription}</td>
@@ -110,7 +110,7 @@ const ExpensesDetails = ({ familyIndex }) => {
             </tr>
           )}
           <tr>שנה קודמת</tr>
-          {lastYearExpenseData.length > 0 ? (
+          {lastYearExpenseData ? (
             lastYearExpenseData.map((expense) => (
               <tr key={expense.expenseDescription}>
                 <td>{expense.expenseDescription}</td>

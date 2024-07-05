@@ -88,7 +88,7 @@ export default function FamilyInList() {
     };
 
     const handleCloseDetails = () => {
-        setSelectedFamily(null); // Close the family details view
+        setSelectedFamily(null); 
     };
 
     const handleSortChange = (event) => {

@@ -18,7 +18,7 @@ const DebtsDetails = ({ familyIndex }) => {
   return (
     <div className="table-container">
       <h2>חובות</h2>
-      <button onClick={() => setUpdatingDebtsDetails(true)}>עריכת פרטים</button>
+      {debtData &&<button onClick={() => setUpdatingDebtsDetails(true)}>עריכת פרטים</button>}
       {updatingDebtsDetails && (
         <div className="modal-overlay">
           <div className="modal-content">
