@@ -7,7 +7,6 @@ const LoginPage = () => {
   const handleLogin = (success) => {
     setIsLoggedIn(success);
     if (success) {
-      // Redirect or navigate to FAMILYMAIN page
       window.location.href = '/main';
     }
   };

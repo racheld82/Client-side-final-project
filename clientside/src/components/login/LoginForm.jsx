@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const LoginForm = ({ handleLogin }) => {
   const [userName, setUserName] = useState('');
@@ -24,10 +25,9 @@ const LoginForm = ({ handleLogin }) => {
       });
 
       const data = await response.json();
-      console.log(data)
 
-      if (response.ok) {
-        handleLogin(true); // Call parent function to handle successful login
+      if (data.length>0) {
+        handleLogin(true); 
       } else {
         alert('Login failed. Please check your credentials or register.');
       }
@@ -38,6 +38,7 @@ const LoginForm = ({ handleLogin }) => {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <h2>Login</h2>
       <input
@@ -58,6 +59,8 @@ const LoginForm = ({ handleLogin }) => {
       <br />
       <button type="submit">Login</button>
     </form>
+    <Link to={"/registration"}>register</Link>
+    </>
   );
 };
 

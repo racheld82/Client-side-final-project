@@ -29,9 +29,8 @@ const RegisterForm = ({ handleRegister }) => {
       });
 
       const data = await response.json();
-
-      if (response.ok) {
-        handleRegister(true); 
+      console.log(data.status);
+      if (data.status) {
         window.location.href = '/families';
       } else {
         alert('Registration failed. Username may already exist.');
