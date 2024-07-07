@@ -74,6 +74,8 @@ const FamilyDetails = () => {
               <th>מקום עבודה אישה</th>
               <th>ממליץ</th>
               <th>מספר טלפון ממליץ</th>
+              <th>דרגה</th>
+
             </tr>
           </thead>
           <tbody>
@@ -96,6 +98,7 @@ const FamilyDetails = () => {
                 <td>{familyData.wifeOccupationPlace}</td>
                 <td>{familyData.recommender}</td>
                 <td>{familyData.recommendersPhone}</td>
+                <td>{familyData.familyLevel}</td>
               </tr>
             ) : (
               <tr>
