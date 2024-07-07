@@ -18,7 +18,7 @@ export default function FamilyInList() {
     const [activeFilters, setActiveFilters] = useState([]);
     const [latestFilterUrl, setLatestFilterUrl] = useState('');
     const [limitAndOffsetUrl] = useState(`_limit=${limit}&_offset=${offset}`);
-    const [selectedFamily, setSelectedFamily] = useState(null); // State to hold the selected family
+    const [selectedFamily, setSelectedFamily] = useState(null); 
 
     const theadStyle = {
         border: "1px solid black",
@@ -37,28 +37,22 @@ export default function FamilyInList() {
         setErrorMessage("");
         let url = `http://localhost:8080/member`;        
         if (filterUrl.length > 0) {
-            // activeFilters.forEach(filter => {
-            //     if (filter !== 'none' && filterValue) {
-            //         if (url.includes('?')) {
-            //             url += `&${filter}=${filterValue}`;
-            //         } else {
-            //             url += `?${filter}=${filterValue}`;
-            //         }
-            //     }
-            // });
+            
             url += filterUrl + '&' + limitAndOffsetUrl;
             console.log("url with filters: ", url);
         } else {
             url += `?${limitAndOffsetUrl}`
         }
 
-        fetch(url)
+        fetch(url, {
+            credentials: 'include'
+        })
             .then((response) => {
                 if (response.ok) return response.json();
                 else throw new Error("Failed to fetch data");
             })
             .then((result) => {
-                console.log("Fetched data:", result);  // Debugging statement
+                console.log("Fetched data:", result);  
                 if (result.data) {
                     if (append) {
                         setFamilies(prevFamilies => [...prevFamilies, ...result.data]);
@@ -86,22 +80,7 @@ export default function FamilyInList() {
     const handleDisplayingFullDetails = (familyIndex) => {        
        navigate(`/family/${familyIndex}`);
     };
-
-    const handleCloseDetails = () => {
-        setSelectedFamily(null); 
-    };
-
-    const handleSortChange = (event) => {
-        setSortCriterion(event.target.value);
-    };
-
-    const handleSort = () => {
-        switch (sortCriterion) {
-            case 'numberOfChildren':
-            case 'none':
-                return families;
-        }
-    };
+   
 
     const handleFilterValueChange = (event) => {
         setFilterValue(event.target.value);
@@ -236,13 +215,8 @@ export default function FamilyInList() {
         }
     };
 
-    return (
-        <>
-            <select value={sortCriterion} onChange={handleSortChange}>
-                <option value="numberOfChildren">מספר ילדים</option>
-                <option value="none">none</option>
-            </select>
-            <button onClick={handleSort}>מיין</button>
+    return (        <>
+           
             <div className='filter-div'>
                 <p>:סנן לפי</p>
                 <button id='all' onClick={(event) => handleNoFilter()} style={activeFilters.includes('all') ? activeFilterStyle : defaultFilterStyle}>ללא סינון</button>

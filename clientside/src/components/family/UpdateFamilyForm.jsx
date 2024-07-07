@@ -5,7 +5,9 @@ const UpdateFamilyForm = ({ familyIndex, onClose }) => {
 
   useEffect(() => {    
     
-    fetch(`http://localhost:8080/member?familyIndex=${familyIndex}`)
+    fetch(`http://localhost:8080/member?familyIndex=${familyIndex}`, {
+      credentials: 'include'
+    })
       .then(response => response.json())
       .then(result => {setFamilyData(result.data[0])});
   }, [familyIndex]);
@@ -20,6 +22,7 @@ const UpdateFamilyForm = ({ familyIndex, onClose }) => {
     const formattedFamilyData =  fixFormatOfDob();
     fetch(`http://localhost:8080/member/${familyIndex}`, {
       method: 'PUT',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

@@ -9,10 +9,14 @@ const IncomesDetails = ({ familyIndex }) => {
 
 
   useEffect(() => {
-    fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR}`)
+    fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR}`, {
+      credentials: 'include'
+    })
       .then((response) => response.json())
       .then((result) => setIncomeData(result.data[0]));
-      fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR-1}`)
+      fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR-1}`, {
+        credentials: 'include'
+      })
       .then((response) => response.json())
       .then((result) => setLastYearIncomeData(result.data[0]));
 
@@ -66,6 +70,7 @@ const handleCloseModal = () => {
             <th>תרומות</th>
             <th>הכנסות מנכסים</th>
             <th>סך הכל הכנסות</th>
+            <th>שנה</th>
           </tr>
         </thead>
         <tbody>
@@ -85,6 +90,7 @@ const handleCloseModal = () => {
               <td>{incomeData.charitySupport}</td>
               <td>{incomeData.propertyIncomes}</td>
               <td>{incomeData.totalIncomes}</td>
+              <td>{YEAR}</td>
             </tr>
           ) : (
             <tr>
@@ -107,6 +113,7 @@ const handleCloseModal = () => {
               <td>{lastYearIncomeData.charitySupport}</td>
               <td>{lastYearIncomeData.propertyIncomes}</td>
               <td>{lastYearIncomeData.totalIncomes}</td>
+              <td>{YEAR-1}</td>
             </tr>
           ) : (
             <tr>

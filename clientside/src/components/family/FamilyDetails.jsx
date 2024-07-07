@@ -23,11 +23,15 @@ const FamilyDetails = () => {
   const [updatingBank, setUpdatingBank] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/member?familyIndex=${familyIndex}`)
+    fetch(`http://localhost:8080/member?familyIndex=${familyIndex}`, {
+      credentials: 'include'
+    })
       .then((response) => response.json())
       .then((result) => {
         setFamilyData(result.data[0]);
-        fetch(`http://localhost:8080/bankAccount?familyIndex=${familyIndex}`)
+        fetch(`http://localhost:8080/bankAccount?familyIndex=${familyIndex}`, {
+          credentials: 'include'
+        })
           .then((response) => response.json())
           .then((result) => { setBankData(result.data[0]) });
       });

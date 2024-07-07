@@ -9,7 +9,9 @@ const ChildrenDetails = ({ familyIndex }) => {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/children?familyIndex=${familyIndex}`)
+    fetch(`http://localhost:8080/children?familyIndex=${familyIndex},`, {
+      credentials: 'include'
+    })
       .then((response) => response.json())
       .then((result) => setChildrenData(result.data));
   }, [familyIndex]);
@@ -24,7 +26,7 @@ const ChildrenDetails = ({ familyIndex }) => {
   }
 
   const handleDelete = (childId) => {
-    fetch(`http://localhost:8080/children/${familyIndex}/${childId}`, { method: 'DELETE' })
+    fetch(`http://localhost:8080/children/${familyIndex}/${childId}`, { method: 'DELETE', credentials: 'include'})
       .then((response) => response.json())
       .then(() => {
         setChildrenData(prevChildrenData => prevChildrenData.filter(child => child.childId !== childId));

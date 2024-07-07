@@ -25,6 +25,7 @@ const FileUpload = () => {
         try {
             const response = await fetch('http://localhost:8080/member/upload', {
                 method: 'POST',
+                credentials: 'include',
                 body: formData
             });
             if (response.ok) {
@@ -58,10 +59,11 @@ const FileUpload = () => {
 
     const handleViewAllImages = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/member/files?familyIndex=${familyIndex}`);//Fix this to familyIndex
+            const response = await fetch(`http://localhost:8080/member/files?familyIndex=${familyIndex}, {
+                credentials: 'include'}`);
             if (response.ok) {
                 const files = await response.json();
-                setAllFiles(files); // Store all files in state
+                setAllFiles(files); 
             } else {
                 throw new Error('Failed to fetch all files');
             }

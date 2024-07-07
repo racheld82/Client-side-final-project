@@ -34,6 +34,7 @@ const AddIncomeForm = ({ familyIndex }) => {
     setIncomeData({ ...incomeData, [totalIncomes]: totalIncome });
     fetch('http://localhost:8080/incomes', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

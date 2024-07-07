@@ -14,13 +14,17 @@ const ExpensesDetails = ({ familyIndex }) => {
 
 
   useEffect(() => {
-    fetch(`http://localhost:8080/expenses?familyIndex=${familyIndex}&year=${YEAR}`)
+    fetch(`http://localhost:8080/expenses?familyIndex=${familyIndex}&year=${YEAR}`, {
+      credentials: 'include'
+    })
       .then((response) => response.json())
       .then((result) => {        
         setExpenseData(result.data);
         ExpensesSum(result.data, setTotalExpense);
       })
-    fetch(`http://localhost:8080/expenses?familyIndex=${familyIndex}&year=${YEAR - 1}`)
+    fetch(`http://localhost:8080/expenses?familyIndex=${familyIndex}&year=${YEAR - 1}`, {
+      credentials: 'include'
+    })
       .then((response) => response.json())
       .then((result) => {        
         setLastYearExpenseData(result.data);

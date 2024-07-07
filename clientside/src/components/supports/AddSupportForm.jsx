@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const AddSupportForm = ({ familyIndex, onClose, setParentSupports }) => {
+  console.log("familyIndex: ", familyIndex)
   const [supportData, setSupportData] = useState({
     familyIndex: familyIndex,
     organization: '',
@@ -16,6 +17,7 @@ const AddSupportForm = ({ familyIndex, onClose, setParentSupports }) => {
     e.preventDefault();
     fetch(`http://localhost:8080/supports`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

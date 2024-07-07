@@ -17,6 +17,7 @@ const AddExpenseForm = ({ familyIndex, onClose, setParentExpenseData }) => {
     e.preventDefault();
     fetch(`http://localhost:8080/expenses/${YEAR}`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

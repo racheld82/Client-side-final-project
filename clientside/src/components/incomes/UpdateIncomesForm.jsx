@@ -4,7 +4,9 @@ const UpdateIncomesForm = ({ familyIndex, onClose }) => {
     const [incomesData, setIncomesData] = useState({});
     const YEAR = 2024;
     useEffect(() => {
-        fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR}`)
+        fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR}`, {
+            credentials: 'include'
+        })
             .then((response) => response.json())
             .then((result) => setIncomesData(result.data[0]));
     }, [familyIndex]);
@@ -20,6 +22,7 @@ const UpdateIncomesForm = ({ familyIndex, onClose }) => {
         console.log("after calculating: ", updatedIncomes);
         fetch(`http://localhost:8080/incomes/${familyIndex}?year=${YEAR}`, {
             method: 'PUT',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },

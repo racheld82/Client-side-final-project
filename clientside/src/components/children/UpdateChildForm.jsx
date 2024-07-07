@@ -25,6 +25,7 @@ const UpdateChildForm = ({ child, onClose, forceUpdate, setChildrenData, childre
     console.log("child obj for update: ", updatedChild)
     fetch(`http://localhost:8080/children/${child.familyIndex}/${child.childId}`, {
       method: 'PUT',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

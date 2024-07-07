@@ -39,6 +39,7 @@ const AddFamilyForm = () => {
     e.preventDefault();
     fetch('http://localhost:8080/member', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

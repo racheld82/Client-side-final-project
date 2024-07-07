@@ -5,7 +5,9 @@ const UpdateBankForm = ({ familyIndex, onClose }) => {
 
   useEffect(() => {    
     
-    fetch(`http://localhost:8080/bankAccount?familyIndex=${familyIndex}`)
+    fetch(`http://localhost:8080/bankAccount?familyIndex=${familyIndex}`, {
+      credentials: 'include'
+    })
       .then(response => response.json())
       .then(result => {setBankData(result.data[0])});
   }, [familyIndex]);
@@ -19,6 +21,7 @@ const UpdateBankForm = ({ familyIndex, onClose }) => {
     e.preventDefault();
     fetch(`http://localhost:8080/bankAccount/${familyIndex}`, {
       method: 'PUT',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

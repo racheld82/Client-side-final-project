@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import AddSupportForm from './AddSupportForm';
 
-const SupportsDetails = ({ familyIndex }) => {
+const SupportsDetails = ({familyIndex}) => {   
   const [supportData, setSupportData] = useState([]);
   const [addingSupport, setAddingSupport] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/supports/?familyIndex=${familyIndex}`)
+    let url="";
+    if(familyIndex) url=`http://localhost:8080/supports?familyIndex=${familyIndex}`
+    else url=`http://localhost:8080/supports`
+    fetch(url, {
+      credentials: 'include'
+    })
       .then((response) => response.json())
       .then((result) => setSupportData(result.data));
-  }, [familyIndex]);
+  }, []);
 
   const handleCloseModal = () => {
     setAddingSupport(false);
@@ -18,7 +23,8 @@ const SupportsDetails = ({ familyIndex }) => {
   return (
     <div className="table-container">
       <h2>תמיכות אחרונות</h2>
-      <button onClick={() => setAddingSupport(true)}>הוסף תמיכה</button>
+      {familyIndex ? (<>
+        <button onClick={() => setAddingSupport(true)}>הוסף תמיכה</button>
       {addingSupport &&
         <div className="modal-overlay">
           <div className="modal-content">
@@ -26,6 +32,7 @@ const SupportsDetails = ({ familyIndex }) => {
           </div>
         </div>
       }
+      </>) : <></>}
       <table >
         <thead>
           <tr>

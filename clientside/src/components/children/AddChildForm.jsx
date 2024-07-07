@@ -24,6 +24,7 @@ const AddChildForm = ({familyIndex, onClose, setChildrenData}) => {
       console.log("object before posting: ", newChild);
       fetch(`http://localhost:8080/children`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -45,7 +46,7 @@ const AddChildForm = ({familyIndex, onClose, setChildrenData}) => {
     };
 
     return (
-      <div>
+      <div className='container'>
         <h2>הוספת ילד חדש</h2>
         <label>:שם ילד</label>
         <input type="text" value={childName} onChange={(e) => setChildName(e.target.value)} />
