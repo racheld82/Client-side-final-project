@@ -41,6 +41,7 @@ const RegisterForm = () => {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <h2>Register</h2>
       <input
@@ -68,7 +69,9 @@ const RegisterForm = () => {
       />
       <br />
       <button type="submit">Register</button>
-    </form>
+    </form>    
+    </>
+    
   );
 };
 
