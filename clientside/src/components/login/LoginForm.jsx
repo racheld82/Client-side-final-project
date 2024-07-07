@@ -1,5 +1,4 @@
 // import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
 
 // const LoginForm = ({ handleLogin }) => {
 //   const [userName, setUserName] = useState('');
@@ -66,6 +65,8 @@
 // export default LoginForm;
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 
 const LoginForm = ({ handleLogin }) => {
   const [userName, setUserName] = useState('');
@@ -91,8 +92,8 @@ const LoginForm = ({ handleLogin }) => {
 
       const data = await response.json();
 
-      if (response.status === 200) {
-        handleLogin(true, data.role); // Pass role to handleLogin function
+      if (data.role) {
+        handleLogin(true, data.role); 
       } else {
         alert(data.message);
       }
@@ -103,6 +104,7 @@ const LoginForm = ({ handleLogin }) => {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <h2>Login</h2>
       <input
@@ -123,7 +125,6 @@ const LoginForm = ({ handleLogin }) => {
       <br />
       <button type="submit">Login</button>
     </form>
-    <Link to={"/registration"}>register</Link>
     </>
   );
 };

@@ -23,8 +23,15 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-const MainPage = ({ userRole }) => {
+
+const MainPage = () => {
+
+  const location = useLocation();
+  const role = location.state?.role;
+  console.log(role)
+
   const navigateToFamilies = () => {
     window.location.href = '/families';
   };
@@ -34,10 +41,10 @@ const MainPage = ({ userRole }) => {
   };
 
   const renderAdminFeatures = () => {
-    if (userRole === 'manager') { // Adjust role based on your backend response
+    if (role === 'מנהל') { 
       return (
         <>
-          <Link to="/registration">Register New User</Link>
+          <Link to="/registration">רשום משתמש חדש</Link>
         </>
       );
     }
@@ -45,11 +52,14 @@ const MainPage = ({ userRole }) => {
   };
 
   return (
+    <>
     <div>
       <h1>'קופת צדקה רמות א</h1>
       <button onClick={navigateToFamilies}>Families</button>
       <button onClick={navigateToSupports}>Supports</button>
     </div>
+    {renderAdminFeatures()}
+    </>
   );
 };
 

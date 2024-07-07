@@ -26,17 +26,17 @@
 
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 
 const LoginPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState(null); 
+  const navigate = useNavigate();
 
   const handleLogin = (success, role) => {
     setIsLoggedIn(success);
     if (success) {
-      setUserRole(role);
-      window.location.href = '/main'; 
+      navigate('/main', { state: { role } }); // Navigate to '/main' and pass 'role' as state
     }
   };
 

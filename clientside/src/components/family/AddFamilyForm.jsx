@@ -8,7 +8,6 @@ import AddBankForm from '../bank/AddBankForm';
 
 const AddFamilyForm = () => {
   const [familyIndex, setFamilyIndex]=useState(null)
-  const [saveHit, setSaveHit]
   const [familyData, setFamilyData] = useState({
     familyName: '',
     husbandName: '',

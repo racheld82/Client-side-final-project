@@ -17,7 +17,7 @@ const RegisterForm = () => {
     const formData = {
       userName: userName,
       password: password,
-      rank: rank
+      userRank:rank
     };
 
     try {
@@ -29,9 +29,9 @@ const RegisterForm = () => {
         credentials: 'include', 
         body: JSON.stringify(formData)
       });
-
+      console.log(response);
       if (response.ok) {
-        window.location.href = '/families'; // Redirect upon successful registration
+        window.location.href = '/main'; // Redirect upon successful registration
       } else {
         const data = await response.json();
         alert(`Registration failed: ${data.message}`);
