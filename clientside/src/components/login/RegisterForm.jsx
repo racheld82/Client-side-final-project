@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const RegisterForm = () => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [rank, setRank] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = async (event) => {
@@ -15,7 +16,8 @@ const RegisterForm = () => {
 
     const formData = {
       userName: userName,
-      password: password
+      password: password,
+      rank: rank
     };
 
     try {
@@ -24,7 +26,7 @@ const RegisterForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Include credentials
+        credentials: 'include', 
         body: JSON.stringify(formData)
       });
 
@@ -45,7 +47,7 @@ const RegisterForm = () => {
       <h2>Register</h2>
       <input
         type="text"
-        placeholder="Username"
+        placeholder="שם משתמש"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
         required
@@ -53,7 +55,7 @@ const RegisterForm = () => {
       <br />
       <input
         type="password"
-        placeholder="Password"
+        placeholder="סיסמה"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
@@ -61,9 +63,16 @@ const RegisterForm = () => {
       <br />
       <input
         type="password"
-        placeholder="Confirm Password"
+        placeholder="אשר סיסמה"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
+        required
+      />
+       <input
+        type="text"
+        placeholder="דרגת הרשאות "
+        value={rank}
+        onChange={(e) => setRank(e.target.value)}
         required
       />
       <br />
@@ -75,78 +84,3 @@ const RegisterForm = () => {
 export default RegisterForm;
 
 
-// import React, { useState } from 'react';
-
-// const RegisterForm = ({ handleRegister }) => {
-//   const [userName, setUserName] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [confirmPassword, setConfirmPassword] = useState('');
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-
-//     if (password !== confirmPassword) {
-//       alert('Passwords do not match. Please try again.');
-//       return;
-//     }
-
-//     const formData = {
-//       userName: userName,
-//       password: password
-//     };
-
-//     try {
-//       const response = await fetch('http://localhost:8080/users', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         credentials: 'include', // Include credentials
-//         body: JSON.stringify(formData)
-//       });
-
-//       const data = await response.json();
-//       if (response.ok) {
-//         window.location.href = '/families'; // Redirect upon successful registration
-//       } else {
-//         alert('Registration failed. Username may already exist.');
-//       }
-//     } catch (error) {
-//       console.error('Error during registration:', error);
-//       alert('An error occurred during registration. Please try again later.');
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <h2>Register</h2>
-//       <input
-//         type="text"
-//         placeholder="Username"
-//         value={userName}
-//         onChange={(e) => setUserName(e.target.value)}
-//         required
-//       />
-//       <br />
-//       <input
-//         type="password"
-//         placeholder="Password"
-//         value={password}
-//         onChange={(e) => setPassword(e.target.value)}
-//         required
-//       />
-//       <br />
-//       <input
-//         type="password"
-//         placeholder="Confirm Password"
-//         value={confirmPassword}
-//         onChange={(e) => setConfirmPassword(e.target.value)}
-//         required
-//       />
-//       <br />
-//       <button type="submit">Register</button>
-//     </form>
-//   );
-// };
-
-// export default RegisterForm;

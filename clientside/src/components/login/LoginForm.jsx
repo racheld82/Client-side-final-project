@@ -91,7 +91,6 @@ const LoginForm = ({ handleLogin }) => {
       <br />
       <button type="submit">Login</button>
     </form>
-    <Link to={"/registration"}>register</Link>
     </>
   );
 };
