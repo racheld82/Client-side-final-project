@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import FamilyDetails from './FamilyDetails'; 
 import { utils as XLSXUtils, writeFile as writeExcelFile } from 'xlsx';
-import AddFamilyForm from './AddFamilyForm';
+
 
 
 export default function FamilyInList() {
@@ -12,14 +12,12 @@ export default function FamilyInList() {
     const [errorMessage, setErrorMessage] = useState("");
     const [limit] = useState(20);
     const [offset, setOffset] = useState(0);
-    const [hasMoreData, setHasMoreData] = useState(true);
-    const [sortCriterion, setSortCriterion] = useState('none');
+    const [hasMoreData, setHasMoreData] = useState(true); 
     const [filterValue, setFilterValue] = useState('');
     const [currentSelectedFilter, setCurrentSelectedFilter] = useState('none');
     const [activeFilters, setActiveFilters] = useState([]);
     const [latestFilterUrl, setLatestFilterUrl] = useState('');
     const [limitAndOffsetUrl] = useState(`_limit=${limit}&_offset=${offset}`);
-    const [selectedFamily, setSelectedFamily] = useState(null); 
 
     const theadStyle = {
         border: "1px solid black",
@@ -148,10 +146,7 @@ export default function FamilyInList() {
         const worksheet = XLSXUtils.json_to_sheet(data);
         const workbook = XLSXUtils.book_new();
         XLSXUtils.book_append_sheet(workbook, worksheet, 'משפחות');
-        const fileName = `families_${new Date().toISOString().slice(0, 10)}.xlsx`;
-
-
-        // Save the Excel file
+        const fileName = `families_${new Date().toISOString().slice(0, 10)}.xlsx`;       
         writeExcelFile(workbook, fileName);
     };
 
@@ -233,7 +228,7 @@ export default function FamilyInList() {
             </div>
             <table style={{ borderCollapse: "collapse", width: "100%", direction: "rtl" }}>
                 <thead>
-                    <tr style={{ backgroundColor: "#ccd" }}>
+                    <tr style={{ backgroundColor: "#98b6d7" }}>
                         <th style={theadStyle}>שם משפחה</th>
                         <th style={theadStyle}>מספר זהות אב</th>
                         <th style={theadStyle}>מספר זהות אם</th>

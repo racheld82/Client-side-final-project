@@ -55,8 +55,8 @@ const MainPage = () => {
     <>
     <div>
       <h1>'קופת צדקה רמות א</h1>
-      <button onClick={navigateToFamilies}>Families</button>
-      <button onClick={navigateToSupports}>Supports</button>
+      <button onClick={navigateToFamilies}>משפחות</button>
+      <button onClick={navigateToSupports}>קרנות</button>
     </div>
     {renderAdminFeatures()}
     </>

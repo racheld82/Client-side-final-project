@@ -7,7 +7,7 @@ import AddBankForm from '../bank/AddBankForm';
 
 
 const AddFamilyForm = () => {
-  const [familyIndex, setFamilyIndex]=useState(null)
+  const [familyIndex, setFamilyIndex] = useState(null)
   const [familyData, setFamilyData] = useState({
     familyName: '',
     husbandName: '',
@@ -128,8 +128,13 @@ const AddFamilyForm = () => {
         <label>:דוא"ל</label>
         <input type="email" name="email" value={familyData.email} onChange={handleInputChange} />
 
-        <label>:מקצוע בעל</label>
-        <input type="text" name="husbandOccupation" value={familyData.husbandOccupation} onChange={handleInputChange} />
+        <label>:עיסוק הבעל</label>
+        <select name="husbandOccupation" value={familyData.husbandOccupation} onChange={handleInputChange}>
+          <option value="">בחר עיסוק אב</option>
+          <option value="עובד">עובד</option>
+          <option value="לומד">לומד</option>
+          <option value="לומד חצי יום">לומד חצי יום</option>
+        </select>
 
         <label>:מקום עבודה בעל</label>
         <input type="text" name="husbandOccupationPlace" value={familyData.husbandOccupationPlace} onChange={handleInputChange} />
@@ -149,20 +154,20 @@ const AddFamilyForm = () => {
         <label>:דרגה</label>
         <textarea name="familyLevel" value={familyData.familyLevel} onChange={handleInputChange} />
         <div>
-        <button type="submit">הוסף משפחה</button>
+          <button type="submit">הוסף משפחה</button>
         </div>
-      {familyIndex&&<>
-      <AddChildForm familyIndex={familyIndex}/>
-      <AddExpenseForm familyIndex={familyIndex}/>
-      <AddIncomeForm familyIndex={familyIndex}/>
-      <AddDebtForm familyIndex={familyIndex}/>
-      <AddBankForm familyIndex={familyIndex}/>
-      </>
-      }     
+        {familyIndex && <>
+          <AddChildForm familyIndex={familyIndex} />
+          <AddExpenseForm familyIndex={familyIndex} />
+          <AddIncomeForm familyIndex={familyIndex} />
+          <AddDebtForm familyIndex={familyIndex} />
+          <AddBankForm familyIndex={familyIndex} />
+        </>
+        }
 
       </form>
       <div className='saving-button'>
-      <button onClick={()=>{window.location.href="/families"}}>שמירה</button>
+        <button onClick={() => { window.location.href = "/families" }}>שמירה</button>
       </div>
     </div>
   );

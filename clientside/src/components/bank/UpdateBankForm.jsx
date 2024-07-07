@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const UpdateBankForm = ({ familyIndex, onClose }) => {
+const UpdateBankForm = ({ familyIndex, onClose, setParentBankData }) => {
   const [bankData, setBankData] = useState({});
 
   useEffect(() => {    
@@ -29,6 +29,7 @@ const UpdateBankForm = ({ familyIndex, onClose }) => {
     })
       .then(response => response.json())
       .then(data => {
+        setParentBankData(bankData)
         console.log('Bank account details updated:', data);        
       })
       .catch(error => {

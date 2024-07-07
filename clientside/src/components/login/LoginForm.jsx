@@ -106,10 +106,10 @@ const LoginForm = ({ handleLogin }) => {
   return (
     <>
     <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
+      <h2>התחברות</h2>
       <input
         type="text"
-        placeholder="Username"
+        placeholder="שם משתמש"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
         required
@@ -117,13 +117,13 @@ const LoginForm = ({ handleLogin }) => {
       <br />
       <input
         type="password"
-        placeholder="Password"
+        placeholder="סיסמה"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
       <br />
-      <button type="submit">Login</button>
+      <button type="submit">התחבר</button>
     </form>
     </>
   );
