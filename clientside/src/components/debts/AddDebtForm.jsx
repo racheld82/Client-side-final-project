@@ -39,7 +39,7 @@ const AddDebtForm = ({ familyIndex }) => {
 
   return (
     <div>
-      <h2>הוספת חוב חדש</h2>
+      <h2>הוספת פרטי חובות</h2>
       <form onSubmit={handleSubmit}>
         <label>:משכנתא - חוב</label>
         <input type="number" name="mortgageDebt" value={debtData.mortgageDebt} onChange={handleInputChange} />
@@ -65,7 +65,7 @@ const AddDebtForm = ({ familyIndex }) => {
         <label>:הלוואות פרטיות - תשלומים חודשיים</label>
         <input type="number" name="outstandingLoansRepayments" value={debtData.outstandingLoansRepayments} onChange={handleInputChange} />
 
-        <button type="submit">שמירה</button>
+        <button type="submit">הוספת פרטי החובות</button>
       </form>
     </div>
   );

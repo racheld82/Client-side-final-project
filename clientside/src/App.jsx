@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import './App.css'
 import FamilyInList from './components/family/FamilyInLIst.jsx';
 import LoginPage from './components/login/LoginPage.jsx';
@@ -8,10 +7,9 @@ import FileUpload from './components/files/FileUpload.jsx';
 import RegisterForm from './components/login/RegisterForm.jsx';
 import SupportsDetails from './components/supports/SupportsDetails.jsx';
 import MainPage from './MainPage.jsx';
+import AddFamilyForm from './components/family/AddFamilyForm.jsx';
 
 function App() {
-
-
   return (
     <>
       <Router>
@@ -20,6 +18,7 @@ function App() {
           <Route path="/registration" element={<RegisterForm />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/families" element={<FamilyInList />} />
+          <Route path="/families/add" element={<AddFamilyForm />} />
           <Route path="/supports" element={<SupportsDetails />} />
           <Route path="/family/:familyIndex" element={<FamilyDetails />} />
           <Route path="/family/:familyIndex/files" element={<FileUpload />} />
@@ -30,4 +29,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

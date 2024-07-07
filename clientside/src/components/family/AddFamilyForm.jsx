@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
+import AddChildForm from '../children/AddChildForm';
+import AddExpenseForm from '../expenses/AddExpenseForm';
+import AddIncomeForm from '../incomes/AddIncomeForm';
+import AddDebtForm from '../debts/AddDebtForm';
+import AddBankForm from '../bank/AddBankForm';
+
 
 const AddFamilyForm = () => {
+  const [familyIndex, setFamilyIndex]=useState(null)
   const [familyData, setFamilyData] = useState({
     familyName: '',
     husbandName: '',
@@ -27,7 +34,9 @@ const AddFamilyForm = () => {
     wifeOccupationPlace: '',
     recommender: '',
     recommendersPhone: '',
-    descriptionAndRequest: ''
+    descriptionAndRequest: '',
+    familyLevel: ''
+
   });
 
   const handleInputChange = (e) => {
@@ -47,8 +56,7 @@ const AddFamilyForm = () => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Family added:', data);
-        // אפשר להוסיף פה ניווט או פעולות נוספות לאחר ההוספה
+        setFamilyIndex(data);
       })
       .catch(error => {
         console.error('Error adding family:', error);
@@ -138,8 +146,21 @@ const AddFamilyForm = () => {
         <label>תיאור ובקשה:</label>
         <textarea name="descriptionAndRequest" value={familyData.descriptionAndRequest} onChange={handleInputChange} />
 
+        <label>דרגה:</label>
+        <textarea name="familyLevel" value={familyData.familyLevel} onChange={handleInputChange} />
         <button type="submit">הוסף משפחה</button>
+      {familyIndex&&<>
+      <AddChildForm familyIndex={familyIndex}/>
+      <AddExpenseForm familyIndex={familyIndex}/>
+      <AddIncomeForm familyIndex={familyIndex}/>
+      <AddDebtForm familyIndex={familyIndex}/>
+      <AddBankForm familyIndex={familyIndex}/>
+      </>
+      }
+      
+
       </form>
+      <button onClick={()=>{window.location.href="/families"}}>שמירה</button>
     </div>
   );
 };

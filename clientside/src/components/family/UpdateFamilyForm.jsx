@@ -129,6 +129,10 @@ const UpdateFamilyForm = ({ familyIndex, onClose }) => {
         <label>תיאור ובקשה:</label>
         <textarea name="descriptionAndRequest" value={familyData.descriptionAndRequest} onChange={handleInputChange} />
 
+        <label>דרגה:</label>
+        <textarea name="familyLevel" value={familyData.familyLevel} onChange={handleInputChange} />
+
+
         <button type="submit">עדכן פרטים</button>
         <button onClick={() => {onClose();}}>ביטול</button>
       </form>

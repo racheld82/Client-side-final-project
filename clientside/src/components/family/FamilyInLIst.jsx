@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FamilyDetails from './FamilyDetails'; 
 import { utils as XLSXUtils, writeFile as writeExcelFile } from 'xlsx';
+import AddFamilyForm from './AddFamilyForm';
 
 
 export default function FamilyInList() {
@@ -216,7 +217,7 @@ export default function FamilyInList() {
     };
 
     return (        <>
-           
+            <Link to={'add'}>הוסף משפחה</Link>
             <div className='filter-div'>
                 <p>:סנן לפי</p>
                 <button id='all' onClick={(event) => handleNoFilter()} style={activeFilters.includes('all') ? activeFilterStyle : defaultFilterStyle}>ללא סינון</button>
