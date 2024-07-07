@@ -17,6 +17,13 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
+body{
+  background-color: #e9f4fb;
+}
+
+.adding-family-form{
+  
+}
 
 /* styles.css */
 .table-container .bank-details{
