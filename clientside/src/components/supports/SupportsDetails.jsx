@@ -22,7 +22,7 @@ const SupportsDetails = ({familyIndex}) => {
 
   return (
     <div className="table-container">
-      <h2>תמיכות אחרונות</h2>
+      <h3>תמיכות אחרונות</h3>
       {familyIndex ? (<>
         <button onClick={() => setAddingSupport(true)}>הוסף תמיכה</button>
       {addingSupport &&
@@ -33,6 +33,7 @@ const SupportsDetails = ({familyIndex}) => {
         </div>
       }
       </>) : <></>}
+      <div className='supports-table'>
       <table >
         <thead>
           <tr>
@@ -57,6 +58,7 @@ const SupportsDetails = ({familyIndex}) => {
           )}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

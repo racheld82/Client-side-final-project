@@ -37,7 +37,7 @@ const ChildrenDetails = ({ familyIndex }) => {
 
   return (
     <div className="table-container">
-      <h2>פרטי ילדים</h2>
+      <h3>פרטי ילדים</h3>
       <button onClick={() => setAddingChild(true)}>הוסף ילד</button>
       {
         addingChild &&
@@ -60,6 +60,7 @@ const ChildrenDetails = ({ familyIndex }) => {
           </div>
         </div>
       )}
+      <div className='children-table'>
       <table>
         <thead>
           <tr>
@@ -96,6 +97,7 @@ const ChildrenDetails = ({ familyIndex }) => {
           )}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

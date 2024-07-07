@@ -21,34 +21,88 @@
 /* styles.css */
 .table-container .bank-details{
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 20px; /* Reduce space between tables and surrounding elements */
-  overflow-x: auto; /* Enable horizontal scrolling for wide tables */
+  flex-wrap: wrap; 
+  margin-bottom: 20px; 
+  overflow-x: auto; 
 }
 
-.table-container table, .bank-details table{
-  width: 48%; /* Adjust width as needed */
+.table-container table{
+   
   border-collapse: collapse;
-  margin-bottom: 10px; /* Adjust spacing between tables */  
+  margin-bottom: 10px; /* Adjust spacing between tables */
+}
+.bank-details table {
+  width: 50%;
+  border-collapse: collapse;
+  margin-left: 24%;
 }
 
 .table-container th, .table-container td, .bank-details th, .bank-details td{
   border: 1px solid black;
   padding: 8px;
-  text-align: right; /* Align text to the right */
+  text-align: right; 
 }
 
 .table-container th, .bank-details th{
-  background-color: #ccd;
+  background-color: #cfddec;
   font-weight: bold;
 }
 
 .hidden-details {
-  display: flex;
-  flex-direction: column;
+  display: flex; 
   justify-content: space-between;
+  align-items: center;
 }
+.supports-table{
+  margin-left: 37%;
+}
+.debts-table{
+  width: 98%;
+}
+.expenses-table{
+  margin-left: 37%;
+}
+.incomes-table{
+  width: 95%;
+}
+.children-table{
+ width: 96%;
+}
+
+.details-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Five columns */
+  gap: 20px;
+  background-color: #cfddec;
+}
+
+.detail-row {
+  margin-bottom: 10px;
+}
+
+.detail-row p {
+  margin: 16px 0;
+  font-weight: bold;
+  text-align: right;
+  width: 125%
+}
+
+.detail-row p span {
+  font-weight: normal; /* Ensure variable values are normal weight */
+}
+
+.request-container p {
+  font-weight: bold;
+}
+
+
+
+/* .hidden-details-tables {
+  display: flex;
+  justify-content: center;
+  margin-left: 15%;
+  flex-direction: column;
+} */
 
 /* Modal overlay */
 .modal-overlay {

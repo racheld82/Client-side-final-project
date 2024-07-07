@@ -74,7 +74,7 @@ const ExpensesDetails = ({ familyIndex }) => {
 
   return (
     <div className="table-container">
-      <h2>הוצאות</h2>
+      <h3>הוצאות</h3>
       <button onClick={() => setDeleteAll(true)}>מחיקת כל הוצאות המשפחה בשנה זו</button>
       {deleteAll && (
         <div className="modal-overlay">
@@ -93,6 +93,7 @@ const ExpensesDetails = ({ familyIndex }) => {
           </div>
         </div>
       }
+      <div className='expenses-table'>
       <table>
         <thead>
           <tr>
@@ -128,6 +129,7 @@ const ExpensesDetails = ({ familyIndex }) => {
           )}
         </tbody>
       </table>
+      </div>
       <p>{ExpensesMonitor()}</p>
     </div>
   );

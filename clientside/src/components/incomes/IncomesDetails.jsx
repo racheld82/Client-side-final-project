@@ -44,7 +44,7 @@ const handleCloseModal = () => {
 
   return (
     <div className="table-container">
-      <h2>הכנסות</h2>
+      <h3>הכנסות</h3>
       <button onClick={() => setUpdatingIncomes(true)}>עריכת פרטים</button>
       {updatingIncomes && (
         <div className="modal-overlay">
@@ -53,6 +53,7 @@ const handleCloseModal = () => {
           </div>
         </div>
       )}
+      <div className='incomes-table'>
       <table>
         <thead>
           <tr>
@@ -122,6 +123,7 @@ const handleCloseModal = () => {
           )}
         </tbody>
       </table>
+      </div>
       <p>{IncomesMonitor()}</p>
     </div>
   );

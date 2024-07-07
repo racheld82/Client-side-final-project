@@ -21,7 +21,7 @@ const DebtsDetails = ({ familyIndex }) => {
 
   return (
     <div className="table-container">
-      <h2>חובות</h2>      
+      <h3>חובות</h3>      
       {debtData &&<button onClick={() => setUpdatingDebtsDetails(true)}>עריכת פרטים</button>}
       {updatingDebtsDetails && (
         <div className="modal-overlay">
@@ -30,6 +30,7 @@ const DebtsDetails = ({ familyIndex }) => {
           </div>
         </div>
       )}
+      <div className='debts-table'>
       <table>
         <thead>
           <tr>
@@ -62,6 +63,7 @@ const DebtsDetails = ({ familyIndex }) => {
           )}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };
