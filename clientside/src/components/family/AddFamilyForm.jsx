@@ -12,28 +12,28 @@ const AddFamilyForm = () => {
     familyName: '',
     husbandName: '',
     wifeName: '',
-    husbandId: '',
-    wifeId: '',
-    husbandDob: '',
-    wifeDob: '',
+    husbandId: null,
+    wifeId: null,
+    husbandDob: null,
+    wifeDob: null,
     familyStatus: '',
-    numberOfChildren: '',
-    numberOfMarriedChildren: '',
+    numberOfChildren: 0,
+    numberOfMarriedChildren: 0,
     street: '',
     entrance: '',
-    floor: '',
-    appartmentNumber: '',
-    numberOfRooms: '',
+    floor: 0,
+    appartmentNumber: 0,
+    numberOfRooms: 0,
     community: '',
-    husbandsPhone: '',
-    wifePhone: '',
-    homePhone: '',
-    email: '',
-    husbandOccupation: '',
+    husbandsPhone: null,
+    wifePhone: null,
+    homePhone: null,
+    email: null,
+    husbandOccupation: null,
     husbandOccupationPlace: '',
     wifeOccupationPlace: '',
     recommender: '',
-    recommendersPhone: '',
+    recommendersPhone: null,
     descriptionAndRequest: '',
     familyLevel: ''
 
@@ -90,7 +90,13 @@ const AddFamilyForm = () => {
         <input type="date" name="wifeDob" value={familyData.wifeDob} onChange={handleInputChange} />
 
         <label>:מצב משפחתי</label>
-        <input type="text" name="familyStatus" value={familyData.familyStatus} onChange={handleInputChange} />
+        <select name="familyStatus" value={familyData.familyStatus} onChange={handleInputChange}>
+          <option value="">בחר מצב משפחתי</option>
+          <option value="נשואים">נשואים</option>
+          <option value="גרוש/ה">גרוש/ה</option>
+          <option value="אלמנ/ה">אלמנ/ה</option>
+          <option value="פרודים">פרודים</option>
+        </select>
 
         <label>:מספר ילדים</label>
         <input type="number" name="numberOfChildren" value={familyData.numberOfChildren} onChange={handleInputChange} />
@@ -152,16 +158,16 @@ const AddFamilyForm = () => {
         <textarea name="descriptionAndRequest" value={familyData.descriptionAndRequest} onChange={handleInputChange} />
 
         <label>:דרגה</label>
-        <textarea name="familyLevel" value={familyData.familyLevel} onChange={handleInputChange} />
+        <input type='text' name="familyLevel" value={familyData.familyLevel} onChange={handleInputChange} />
         <div>
           <button type="submit">הוסף משפחה</button>
         </div>
         {familyIndex && <>
+          <AddBankForm familyIndex={familyIndex} />
           <AddChildForm familyIndex={familyIndex} />
           <AddExpenseForm familyIndex={familyIndex} />
           <AddIncomeForm familyIndex={familyIndex} />
           <AddDebtForm familyIndex={familyIndex} />
-          <AddBankForm familyIndex={familyIndex} />
         </>
         }
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import AddIncomeForm from './AddIncomeForm';
 
 const UpdateIncomesForm = ({ familyIndex, onClose }) => {
-    const [incomesData, setIncomesData] = useState({});
+    const [incomesData, setIncomesData] = useState(null);
     const YEAR = 2024;
     useEffect(() => {
         fetch(`http://localhost:8080/incomes?familyIndex=${familyIndex}&year=${YEAR}`, {
@@ -49,6 +50,7 @@ const UpdateIncomesForm = ({ familyIndex, onClose }) => {
 
 
     return (
+        <>{incomesData?
         <div>
             <h2>עדכון פרטי הכנסות</h2>
             <form onSubmit={handleSubmit} className='edit-form'>
@@ -93,7 +95,9 @@ const UpdateIncomesForm = ({ familyIndex, onClose }) => {
                 <button type="submit">עדכן פרטים</button>
                 <button onClick={() => { onClose(); }}>ביטול</button>
             </form>
-        </div>
+        </div>: 
+        <AddIncomeForm familyIndex={familyIndex}/>}
+        </>
     );
 };
 

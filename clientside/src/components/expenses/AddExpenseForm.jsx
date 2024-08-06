@@ -43,7 +43,7 @@ const AddExpenseForm = ({ familyIndex, onClose, setParentExpenseData }) => {
         <label>:סכום הוצאה</label>
         <input type="number" name="expenseSum" value={expenseData.expenseSum} onChange={handleInputChange} required />
         <button type="submit">הוסף הוצאה</button>
-        <button onClick={() => onClose()}>ביטול</button>
+        <button type="button" onClick={() => onClose()}>ביטול</button>
       </form>
     </div>
   );

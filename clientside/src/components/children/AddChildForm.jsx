@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-const AddChildForm = ({familyIndex, onClose, setChildrenData}) => {
+const AddChildForm = ({familyIndex, onClose}) => {
     const [childName, setChildName] = useState('');
     const [childId, setChildId] = useState(null);
     const [childDOB, setChildDOB] = useState('');
@@ -32,7 +32,6 @@ const AddChildForm = ({familyIndex, onClose, setChildrenData}) => {
       })
       .then(response => response.json())
       .then(data => {        
-        setChildrenData(prev => [...prev, newChild]);        
         setChildName('');
         setChildDOB('');
         setSchoolOrJobPlace('');
@@ -40,7 +39,6 @@ const AddChildForm = ({familyIndex, onClose, setChildrenData}) => {
         setChildIncomes(null);
         setAdditionalExpensesDescription('');
         setAdditionalExpensesSum(null);
-        onClose();
       })
       .catch(error => console.error('Error adding child:', error));
     };

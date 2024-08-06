@@ -1,48 +1,71 @@
 import React, { useState } from 'react';
 
-const AddIncomeForm = ({ familyIndex }) => {
+const AddIncomeForm = ({ familyIndex, YEAR, onClose }) => {
   const [incomeData, setIncomeData] = useState({
     familyIndex: familyIndex,
-    husbandIncomesSum: '',
-    wifeIncomesSum: '',
-    addtionalIncomesDescription: '',
-    addtionalIncomesSum: '',
-    childAllowance: '',
-    residualAllowance: '',
-    disabilityFund: '',
-    guaranteedIncome: '',
-    rentAssitance: '',
-    alimony: '',
-    familySupport: '',
-    charitySupport: '',
-    propertyIncomes: '',
-    totalIncomes: '',
+    husbandIncomesSum: 0,
+    wifeIncomesSum: 0,
+    additionalIncomesDescription: 0,
+    additionalIncomesSum: 0,
+    childAllowance: 0,
+    residualAllowance: 0,
+    disabilityFund: 0,
+    guaranteedIncome: 0,
+    rentAssitance: 0,
+    alimony: 0,
+    familySupport: 0,
+    charitySupport: 0,
+    propertyIncomes: 0,
+    totalIncomes: 0 
   });
-  const [totalIncome, setTotalIncome]=useState(0);
+
+  const calculateTotalIncome = () => {
+    return [
+      'husbandIncomesSum',
+      'wifeIncomesSum',
+      'additionalIncomesSum',
+      'childAllowance',
+      'residualAllowance',
+      'disabilityFund',
+      'guaranteedIncome',
+      'rentAssitance',
+      'alimony',
+      'familySupport',
+      'charitySupport',
+      'propertyIncomes'
+    ].reduce((acc, key) => acc + (parseFloat(incomeData[key]) || 0), 0);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if(name!='addtionalIncomesDescription')
-      setTotalIncome(totalIncome+value);
-    setIncomeData({ ...incomeData, [name]: value });
-
+    setIncomeData({
+      ...incomeData,
+      [name]: value
+    });
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIncomeData({ ...incomeData, [totalIncomes]: totalIncome });
-    fetch('http://localhost:8080/incomes', {
+
+    const totalIncome = calculateTotalIncome();
+
+    const updatedIncomeData = {
+      ...incomeData,
+      totalIncomes: totalIncome
+    };
+
+    fetch(`http://localhost:8080/incomes/${YEAR}`, {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(incomeData),
+      body: JSON.stringify(updatedIncomeData),
     })
       .then(response => response.json())
       .then(data => {
         console.log('Income added:', data);
+        if (onClose) onClose();
       })
       .catch(error => {
         console.error('Error adding income:', error);
@@ -60,10 +83,10 @@ const AddIncomeForm = ({ familyIndex }) => {
         <input type="number" name="wifeIncomesSum" value={incomeData.wifeIncomesSum} onChange={handleInputChange} required />
 
         <label>תיאור הכנסות נוספות:</label>
-        <input type="text" name="addtionalIncomesDescription" value={incomeData.addtionalIncomesDescription} onChange={handleInputChange} />
+        <input type="text" name="additionalIncomesDescription" value={incomeData.additionalIncomesDescription} onChange={handleInputChange} />
 
         <label>סכום הכנסות נוספות:</label>
-        <input type="number" name="addtionalIncomesSum" value={incomeData.addtionalIncomesSum} onChange={handleInputChange} />
+        <input type="number" name="additionalIncomesSum" value={incomeData.additionalIncomesSum} onChange={handleInputChange} />
 
         <label>קצבאות ילדים:</label>
         <input type="number" name="childAllowance" value={incomeData.childAllowance} onChange={handleInputChange} />
@@ -92,10 +115,11 @@ const AddIncomeForm = ({ familyIndex }) => {
         <label>הכנסות מנכסים:</label>
         <input type="number" name="propertyIncomes" value={incomeData.propertyIncomes} onChange={handleInputChange} />
 
-        {/* <label>סך הכל הכנסות:</label>
-        <input type="number" name="totalIncomes" value={incomeData.totalIncomes} onChange={handleInputChange} required /> */}
+        <label>סך הכל הכנסות:</label>
+        <input type="number" name="totalIncomes" value={calculateTotalIncome()} readOnly />
 
         <button type="submit">הוסף הכנסה</button>
+        <button type="button" onClick={onClose}>ביטול</button>
       </form>
     </div>
   );
